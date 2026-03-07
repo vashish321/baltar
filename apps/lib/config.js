@@ -5,7 +5,7 @@ const config = {
     environment: 'development'
   },
   production: {
-    apiUrl: 'https://baltar-inc-1.onrender.com',
+    apiUrl: process.env.NEXT_PUBLIC_API_URL || 'https://baltar-inc-1.onrender.com',
     environment: 'production'
   }
 };

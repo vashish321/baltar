@@ -36,10 +36,10 @@ const useWebSocket = (url = null) => {
       }
       
       // Production
-      return 'https://baltar-inc-1.onrender.com';
+      return process.env.NEXT_PUBLIC_WS_URL || 'https://baltar-inc-1.onrender.com';
     }
-    
-    return 'https://baltar-inc-1.onrender.com';
+
+    return process.env.NEXT_PUBLIC_WS_URL || 'https://baltar-inc-1.onrender.com';
   }, [url]);
 
   // Initialize WebSocket connection

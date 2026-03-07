@@ -1,0 +1,15 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /login
+Disallow: /signup
+Disallow: /media/consumer-pulse/signin
+Disallow: /media/consumer-pulse/signup
+Disallow: /technologies/toronto-media-inc/client-portal
+
+# Host
+Host: https://baltar.ca
+
+# Sitemaps
+Sitemap: https://baltar.ca/sitemap.xml
