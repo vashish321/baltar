@@ -16,12 +16,12 @@ const navItems = {
 };
 
 const hrefMap = {
-  'transac': '/transac',
-  'toronto media inc.': '/frontend-web-design',
-  'le mode co.': '/le-mode-co',
-  'savour & sip': '/sip-and-savour',
-  'consumer pulse': '/consumer-pulse',
-  'vr (luxury eyewear & fashion tech)': '/vr',
+  'transac': '/finance/transac',
+  'toronto media inc.': '/technologies/toronto-media-inc',
+  'le mode co.': '/fashion/le-mode-co',
+  'savour & sip': '/hospitality/savour-and-sip',
+  'consumer pulse': '/media/consumer-pulse',
+  'vr (luxury eyewear & fashion tech)': '/fashion/vr',
 };
 
 export default function Navbar() {

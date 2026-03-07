@@ -5,19 +5,19 @@ import styles from './MetaFooter.module.css';
 
 const footerSections = {
   'Technologies': [
-    { name: 'Toronto Media Inc.', href: '/frontend-web-design', external: true },
+    { name: 'Toronto Media Inc.', href: '/technologies/toronto-media-inc', external: false },
     { name: 'Cre8ive Studio', href: '/cre8ive-studio-comingsoon', external: false },
-    { name: 'Transac', href: '/transac', external: true },
+    { name: 'Transac', href: '/finance/transac', external: false },
   ],
   'Services': [
-    { name: 'Hospitality', href: '/sip-and-savour', external: true },
-    { name: 'Engineering', href: '/archon-engineering-comingsoon', external: false },
+    { name: 'Hospitality', href: '/hospitality/savour-and-sip', external: false },
+    { name: 'Engineering', href: '/consulting/baltar-engineering', external: false },
     { name: 'Finance', href: '/baltar-finance-comingsoon', external: false },
   ],
   'Brands': [
-    { name: 'VR Fashion', href: '/vr', external: true },
-    { name: 'Le Mode Co.', href: '/le-mode-co', external: true },
-    { name: 'Consumer Pulse', href: '/consumer-pulse', external: true },
+    { name: 'VR Fashion', href: '/fashion/vr', external: false },
+    { name: 'Le Mode Co.', href: '/fashion/le-mode-co', external: false },
+    { name: 'Consumer Pulse', href: '/media/consumer-pulse', external: false },
   ],
   'Company': [
     { name: 'About', href: '/about-comingsoon', external: false },

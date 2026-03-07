@@ -1,6 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import LayoutClient from "./components/layoutClient";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -12,22 +11,26 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
+
 export const metadata = {
-  title: "Baltar Inc",
-  description: "Immersive modern homepage",
+  title: {
+    default: "Baltar Inc",
+    template: "%s | Baltar Inc",
+  },
+  description:
+    "A modern multi-vertical ecosystem — technology, hospitality, consulting, finance, fashion, and media.",
+  metadataBase: new URL("https://baltar.ca"),
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-       <head>
-        {/* ✅ Ensures mobile responsiveness */}
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      </head>
-      <body>
-        <div style={{ overflowX: 'hidden', width: '100%' }}>
-          <LayoutClient>{children}</LayoutClient>
-        </div>
+      <body style={{ overflowX: "hidden", width: "100%" }}>
+        {children}
       </body>
     </html>
   );
