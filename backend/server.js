@@ -13,14 +13,16 @@ const server = http.createServer(app);
 // Enhanced CORS configuration for production
 const corsOptions = {
   origin: [
-    'http://localhost:3000', // Local development
-    'https://baltar-inc.vercel.app', // Your Vercel domain
-    'https://*.vercel.app', // Any Vercel preview deployments
-    /\.vercel\.app$/ // Regex for Vercel domains
+    'http://localhost:3000',          // Local development
+    'https://baltar.ca',              // Production domain
+    'https://www.baltar.ca',          // Production www
+    /\.baltar\.ca$/,                  // All baltar.ca subdomains
+    'https://baltar-inc.vercel.app',  // Vercel primary
+    /\.vercel\.app$/,                 // Vercel preview deployments
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
 // Stripe webhook needs raw body, so add it before express.json()

@@ -1,1 +1,24 @@
-{"name":"baltar-inc","private":true,"dependencies":{"node-cron":"^4.2.1"}}
+{
+  "name": "baltar-inc",
+  "private": true,
+  "packageManager": "npm@10.0.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "backend"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "type-check": "turbo run type-check",
+    "test": "turbo run test",
+    "clean": "turbo run clean"
+  },
+  "devDependencies": {
+    "turbo": "^2.8.16"
+  },
+  "dependencies": {
+    "node-cron": "^4.2.1"
+  }
+}
