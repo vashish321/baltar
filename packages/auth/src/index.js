@@ -1,0 +1,6 @@
+{
+  "name": "@baltar/auth",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "type": "module"
+}
