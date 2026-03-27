@@ -1,5 +1,7 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
 import useWebSocket from '../../../hooks/useWebSocket';
 import styles from './NewsSection.module.css';
 
@@ -50,13 +52,13 @@ export default function NewsSection() {
       console.log('🔍 Fetching all articles from:', requestUrl);
 
       const response = await fetch(requestUrl);
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       const data = await response.json();
-      
+
       console.log('📊 API Response:', {
         success: data.success,
         articleCount: data.articles?.length || 0,
@@ -216,7 +218,7 @@ export default function NewsSection() {
           </h2>
           <div className={styles.connectionStatus}>
             <span className={`${styles.statusDot} ${styles[connectionStatus]}`}></span>
-            {connectionStatus === 'connected' ? 'Live' : 
+            {connectionStatus === 'connected' ? 'Live' :
              connectionStatus === 'error' ? 'Offline' : 'Connecting...'}
           </div>
         </div>
@@ -261,18 +263,23 @@ export default function NewsSection() {
       ) : (
         <div className={styles.articlesGrid}>
           {articles.map((item, index) => (
-            <div 
-              key={item.id || index} 
+            <div
+              key={item.id || index}
               className={`${styles.articleCard} ${item.isBreaking ? styles.breaking : ''}`}
               onClick={() => handleArticleClick(item)}
             >
               <div className={styles.imageContainer}>
-                <img
+                {/* next/image with unoptimized for arbitrary news-API domains */}
+                <Image
                   src={item.imageUrl?.trim() || item.image || "/consumer-pulse-banner.svg"}
-                  alt={item.title}
+                  alt={item.title || 'News article image'}
+                  width={400}
+                  height={225}
                   className={styles.articleImage}
+                  unoptimized
+                  loading="lazy"
                   onError={(e) => {
-                    e.target.src = "/consumer-pulse-banner.svg";
+                    e.currentTarget.src = "/consumer-pulse-banner.svg";
                   }}
                 />
                 {item.isBreaking && (
@@ -290,6 +297,17 @@ export default function NewsSection() {
                     {item.publishedAt ? getTimeAgo(new Date(item.publishedAt)) : 'Recent'}
                   </span>
                 </div>
+                {/* Individual article page link — additive, does not affect modal */}
+                {item.id && (
+                  <Link
+                    href={`/media/consumer-pulse/${item.id}`}
+                    className={styles.articlePageLink}
+                    onClick={(e) => e.stopPropagation()}
+                    aria-label={`Read full article: ${item.title}`}
+                  >
+                    Read Full Article →
+                  </Link>
+                )}
               </div>
             </div>
           ))}
@@ -301,12 +319,16 @@ export default function NewsSection() {
         <div className={styles.modal} onClick={closeModal}>
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
             <button className={styles.closeButton} onClick={closeModal}>×</button>
-            <img
+            {/* next/image for modal — unoptimized for arbitrary news-API domains */}
+            <Image
               src={selectedArticle.imageUrl?.trim() || selectedArticle.image || "/consumer-pulse-banner.svg"}
-              alt={selectedArticle.title}
+              alt={selectedArticle.title || 'Article image'}
+              width={800}
+              height={450}
               className={styles.modalImage}
+              unoptimized
               onError={(e) => {
-                e.target.src = "/consumer-pulse-banner.svg";
+                e.currentTarget.src = "/consumer-pulse-banner.svg";
               }}
             />
             <h2 className={styles.modalTitle}>{selectedArticle.title}</h2>
@@ -320,9 +342,9 @@ export default function NewsSection() {
               {selectedArticle.summary || selectedArticle.description || selectedArticle.content}
             </p>
             {selectedArticle.sourceUrl && (
-              <a 
-                href={selectedArticle.sourceUrl} 
-                target="_blank" 
+              <a
+                href={selectedArticle.sourceUrl}
+                target="_blank"
                 rel="noopener noreferrer"
                 className={styles.sourceLink}
               >

@@ -215,6 +215,21 @@ router.get('/articles', async (req, res) => {
   }
 });
 
+// Public single-article route — used by individual article pages for SEO
+router.get('/articles/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const article = await ConsumerPulseService.getArticleById(id);
+    if (!article) {
+      return res.status(404).json({ success: false, error: 'Article not found' });
+    }
+    res.json({ success: true, article });
+  } catch (error) {
+    console.error('Error fetching article by id:', error);
+    res.status(500).json({ error: 'Failed to fetch article', details: error.message });
+  }
+});
+
 // Article Management Routes (Admin only)
 router.patch('/articles/:id/status', AuthService.requireAuth, async (req, res) => {
   try {

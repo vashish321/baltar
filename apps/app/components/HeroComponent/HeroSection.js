@@ -34,6 +34,7 @@ export default function HeroSection() {
           muted
           loop
           playsInline
+          poster="/fallback-image.jpg"
           className={styles.heroVideo}
         >
           <source src="/video.mp4" type="video/mp4" />

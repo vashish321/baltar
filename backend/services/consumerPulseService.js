@@ -356,6 +356,29 @@ class ConsumerPulseService {
     }
   }
 
+  // Fetch a single published article by its id — used by individual article pages
+  static async getArticleById(id) {
+    try {
+      const article = await prisma.newsArticle.findFirst({
+        where: { id, status: 'PUBLISHED' },
+        include: {
+          analytics: {
+            orderBy: { generatedAt: 'desc' },
+            take: 1
+          }
+        }
+      });
+      if (!article) return null;
+      return {
+        ...article,
+        keywords: (() => { try { return JSON.parse(article.keywords); } catch { return []; } })(),
+        latestAnalytics: article.analytics[0] || null
+      };
+    } catch (error) {
+      throw new Error(`Failed to fetch article: ${error.message}`);
+    }
+  }
+
   static async getArticles(page = 1, limit = 10, filters = {}) {
     try {
       const skip = (page - 1) * limit;
