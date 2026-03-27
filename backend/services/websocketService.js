@@ -27,7 +27,11 @@ class WebSocketService {
       cors: {
         origin: [
           "http://localhost:3000",
+          "https://baltar.ca",
+          "https://www.baltar.ca",
+          /\.baltar\.ca$/,
           "https://baltar-inc.vercel.app",
+          /\.vercel\.app$/,
           "https://baltar-inc-1.onrender.com"
         ],
         methods: ["GET", "POST"],

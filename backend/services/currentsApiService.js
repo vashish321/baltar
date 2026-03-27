@@ -458,6 +458,25 @@ class CurrentsApiService {
       return 0;
     }
   }
+  /**
+   * Check if we can make a request to Currents API.
+   * Required by UnifiedNewsScheduler.canFetchFromProvider().
+   */
+  canMakeRequest() {
+    // Currents API allows 600 requests/day on the free tier.
+    return !!this.apiKey;
+  }
+
+  /**
+   * Return provider status — used by UnifiedNewsScheduler.getStatus().
+   */
+  getStatus() {
+    return {
+      provider: 'Currents API',
+      apiKeyPresent: !!this.apiKey,
+      canMakeRequest: this.canMakeRequest()
+    };
+  }
 }
 
 module.exports = CurrentsApiService;

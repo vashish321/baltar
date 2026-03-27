@@ -98,7 +98,7 @@ class NewsDataService {
         sourceUrl: article.link || '',
         source: article.source_name || 'NewsData.io',
         category: this.categoryDetector.determineCategory(article),
-        imageUrl: article.image_url || '/Trump.jpg', // Fallback to default image if no image provided
+        imageUrl: article.image_url || '/consumer-pulse-banner.svg', // Fallback to Consumer Pulse banner
         keywords: article.keywords || [],
         publishedAt: article.pubDate ? new Date(article.pubDate) : new Date(),
         scrapedAt: new Date(),
@@ -350,6 +350,28 @@ class NewsDataService {
     const union = new Set([...set1, ...set2]);
 
     return intersection.size / union.size; // Jaccard similarity
+  }
+
+  /**
+   * Check if we can make a request to NewsData.io.
+   * Required by UnifiedNewsScheduler.canFetchFromProvider().
+   */
+  canMakeRequest() {
+    // NewsData.io allows 200 requests/day on the free tier.
+    // We rely on the scheduler's rotation strategy to stay within limits
+    // rather than tracking in-memory (which resets on cold start anyway).
+    return !!this.apiKey;
+  }
+
+  /**
+   * Return provider status — used by UnifiedNewsScheduler.getStatus().
+   */
+  getStatus() {
+    return {
+      provider: 'NewsData.io',
+      apiKeyPresent: !!this.apiKey,
+      canMakeRequest: this.canMakeRequest()
+    };
   }
 
   /**

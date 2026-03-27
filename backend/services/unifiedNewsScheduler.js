@@ -62,7 +62,13 @@ class UnifiedNewsScheduler {
 
     this.isRunning = true;
     console.log('✅ Unified news scheduler started (every 30 minutes)');
-    
+
+    // Run an immediate fetch so the DB is populated right after cold start,
+    // without waiting up to 30 minutes for the first cron tick.
+    this.executeScheduledFetch().catch(err =>
+      console.error('❌ Initial fetch on startup failed:', err.message)
+    );
+
     // Broadcast status update
     this.broadcastStatus();
   }
@@ -143,8 +149,8 @@ class UnifiedNewsScheduler {
       });
     }
 
-    // NewsAPI.org - Medium-high priority, good for general news
-    if (this.canFetchFromProvider('newsapi') && hour % 2 === 0) {
+    // NewsAPI.org - Medium-high priority, good for general news (1000 req/day, no need to throttle)
+    if (this.canFetchFromProvider('newsapi')) {
       plan.push({
         provider: 'newsapi',
         category: this.getRotatingCategory(['general', 'business', 'technology', 'health']),
