@@ -67,12 +67,19 @@ export default function FeatureVideos() {
           const target = entry.target;
           if (entry.isIntersecting) {
             target.classList.add(styles.zoomIn);
+            // Play video lazily when it scrolls into view
+            if (target.paused) {
+              target.play().catch(() => {}); // Ignore autoplay policy errors
+            }
           } else {
             target.classList.remove(styles.zoomIn);
+            if (!target.paused) {
+              target.pause();
+            }
           }
         });
       },
-      { threshold: 0.5 }
+      { threshold: 0.3 }
     );
 
     videoRefs.current.forEach((el) => el && observer.observe(el));
@@ -104,10 +111,10 @@ export default function FeatureVideos() {
             ref={(el) => (videoRefs.current[index] = el)}
             src={service.video}
             className={styles.video}
-            autoPlay
             muted
             loop
             playsInline
+            preload="none"
           />
 
           <div className={styles.subsidiaries}>

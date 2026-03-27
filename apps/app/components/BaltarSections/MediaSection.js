@@ -83,6 +83,7 @@ export default function MediaSection() {
           muted
           loop
           playsInline
+          preload="none"
           className={styles.backgroundVideo}
         >
           <source src="/video/media.mp4" type="video/mp4" />

@@ -84,6 +84,7 @@ export default function ContactSection() {
           muted
           loop
           playsInline
+          preload="none"
           className={styles.backgroundVideo}
         >
           <source src="/testimonial.mp4" type="video/mp4" />

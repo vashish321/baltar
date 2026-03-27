@@ -81,6 +81,7 @@ export default function TechnologiesSection() {
           muted
           loop
           playsInline
+          preload="none"
           className={styles.backgroundVideo}
         >
           <source src="/video/technology.mp4" type="video/mp4" />

@@ -81,6 +81,7 @@ export default function FashionSection() {
           muted
           loop
           playsInline
+          preload="none"
           className={styles.backgroundVideo}
         >
           <source src="/video/fashion.mp4" type="video/mp4" />

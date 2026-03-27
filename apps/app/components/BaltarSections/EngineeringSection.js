@@ -57,6 +57,7 @@ export default function EngineeringSection() {
           muted
           loop
           playsInline
+          preload="none"
           className={styles.backgroundVideo}
         >
           <source src="/video/consulting.mp4" type="video/mp4" />

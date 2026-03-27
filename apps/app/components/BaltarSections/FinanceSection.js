@@ -57,6 +57,7 @@ export default function FinanceSection() {
           muted
           loop
           playsInline
+          preload="none"
           className={styles.backgroundVideo}
         >
           <source src="/video/finance.mp4" type="video/mp4" />

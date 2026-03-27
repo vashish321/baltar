@@ -57,6 +57,7 @@ export default function HospitalitySection() {
           muted
           loop
           playsInline
+          preload="none"
           className={styles.backgroundVideo}
         >
           <source src="/video/hospitality.mp4" type="video/mp4" />
