@@ -120,10 +120,8 @@ export default function MediaSection() {
               <p className={styles.serviceDescription}>
                 Get clarity on what your audience really thinks—backed by live data.
               </p>
-              <a 
-                href="/consumer-pulse" 
-                target="_blank" 
-                rel="noopener noreferrer"
+              <a
+                href="/media/consumer-pulse"
                 className={styles.serviceLink}
               >
                 Explore Consumer Pulse →
@@ -131,27 +129,27 @@ export default function MediaSection() {
             </div>
           </motion.div>
 
-          {/* Zeitgeist Media */}
+          {/* Baltar Editorial — coming next */}
           <motion.div className={styles.serviceCard} variants={slideInFromRight}>
             <div className={styles.cardContent}>
-              <h3>Zeitgeist Media</h3>
+              <h3>Baltar Editorial</h3>
               <p>
-                A digital content platform that delivers personalized news, audio, and visual experiences.
+                A long-form content and media production studio for brands that want to tell real stories.
               </p>
               <ul className={styles.featureList}>
-                <li>AI-curated news feed customized by user behavior</li>
-                <li>Auto-generated podcasts and video series</li>
-                <li>Monetized ad space for aligned brands and sponsors</li>
-                <li>Community insights and public engagement tools</li>
+                <li>Ghostwritten articles, op-eds, and whitepapers for executives</li>
+                <li>Brand journalism and sponsored editorial campaigns</li>
+                <li>SEO-optimized content strategies built for organic growth</li>
+                <li>Multimedia production: short-form video, audio, and visual series</li>
               </ul>
               <p className={styles.serviceDescription}>
-                Where content meets automation—Zeitgeist helps brands and users stay ahead of the curve.
+                Built for founders, agencies, and organizations that need content that actually earns attention.
               </p>
-              <a 
-                href="/zeitgeist-media-comingsoon" 
+              <a
+                href="/contact-us"
                 className={styles.serviceLink}
               >
-                Discover Zeitgeist Media →
+                Get in Touch →
               </a>
             </div>
           </motion.div>

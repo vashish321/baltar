@@ -134,33 +134,6 @@ export default function TechnologiesSection() {
             </div>
           </motion.div>
 
-          {/* Cre8ive Studio */}
-          <motion.div className={styles.serviceCard} variants={slideInRight}>
-            <div className={styles.cardContent}>
-              <h3>Cre8ive Studio</h3>
-              <p>
-                Our graphic design arm provides branding, creative direction, and print-ready production.
-              </p>
-              <ul className={styles.featureList}>
-                <li>Logo design, brand kits, marketing materials, packaging, and signage</li>
-                <li>Online design request system for one-time or recurring projects</li>
-                <li>Interactive portfolio showcasing past client work</li>
-                <li>AI-powered brand generator for fast visual concepts</li>
-                <li>Print store for business cards, flyers, brochures, and banners</li>
-                <li>File preparation for web, print, and digital ads</li>
-              </ul>
-              <p className={styles.serviceDescription}>
-                We help brands come to life visually—with intention, precision, and consistency.
-              </p>
-              <a 
-                href="/cre8ive-studio-comingsoon" 
-                className={styles.serviceLink}
-              >
-                View Creative Services →
-              </a>
-            </div>
-          </motion.div>
-
           {/* Transac */}
           <motion.div className={styles.serviceCard} variants={slideInLeft}>
             <div className={styles.cardContent}>

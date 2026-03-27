@@ -6,12 +6,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import styles from './MetaHeader.module.css';
 
 const navItems = {
-  Technologies: ['Toronto Media Inc.', 'Cre8ive Studio', 'Transac'],
+  Technologies: ['Toronto Media Inc.', 'Transac'],
   Hospitality: ['Savour & Sip'],
   Engineering: ['Archon Engineering'],
   Finance: ['Baltar Wealth Management'],
   Fashion: ['VR (Luxury Eyewear & Fashion Tech)', 'Le Mode Co.'],
-  Media: ['Consumer Pulse', 'Zeitgeist Media'],
+  Media: ['Consumer Pulse'],
 };
 
 const hrefMap = {

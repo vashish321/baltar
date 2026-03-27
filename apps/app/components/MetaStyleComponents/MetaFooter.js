@@ -6,8 +6,8 @@ import styles from './MetaFooter.module.css';
 const footerSections = {
   'Technologies': [
     { name: 'Toronto Media Inc.', href: '/technologies/toronto-media-inc', external: false },
-    { name: 'Cre8ive Studio', href: '/cre8ive-studio-comingsoon', external: false },
     { name: 'Transac', href: '/finance/transac', external: false },
+    { name: 'Consumer Pulse', href: '/media/consumer-pulse', external: false },
   ],
   'Services': [
     { name: 'Hospitality', href: '/hospitality/savour-and-sip', external: false },
@@ -17,7 +17,7 @@ const footerSections = {
   'Brands': [
     { name: 'VR Fashion', href: '/fashion/vr', external: false },
     { name: 'Le Mode Co.', href: '/fashion/le-mode-co', external: false },
-    { name: 'Consumer Pulse', href: '/media/consumer-pulse', external: false },
+    { name: 'Savour & Sip', href: '/hospitality/savour-and-sip', external: false },
   ],
   'Company': [
     { name: 'About', href: '/about-comingsoon', external: false },

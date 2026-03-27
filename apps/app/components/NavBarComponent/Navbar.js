@@ -7,12 +7,11 @@ import './navbar.css';
 
 const navItems = {
   Finance: ['Wealth Management', 'Transac'],
-  Technology: ['Toronto Media Inc.', 'Cre8ive Studio'],
+  Technology: ['Toronto Media Inc.'],
   Consulting: ['Archon Engineering'],
   Hospitality: ['Savour & Sip'],
   Fashion: ['VR (Luxury Eyewear & Fashion Tech)', 'Le Mode Co.'],
-  Media: ['Consumer Pulse', 'Zeitgeist Media'],
-  Retail: ['Baltar Prime'],
+  Media: ['Consumer Pulse'],
 };
 
 const hrefMap = {

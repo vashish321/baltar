@@ -15,8 +15,8 @@ const services = [
     name: 'Baltar Technology',
     video: '/video/technology.mp4',
     subsidiaries: [
-      { name: 'Frontend Web Design', desc: 'Design-first engineering for modern brands.', cta: 'Explore Designs' },
-      { name: 'Cre8ive Studio', desc: 'Creative & interactive experiences that convert.', cta: 'Go to Studio' },
+      { name: 'Toronto Media Inc.', desc: 'Full-stack web design and development for modern brands.', cta: 'View Services' },
+      { name: 'Transac', desc: 'Digital receipts and loyalty tools for businesses.', cta: 'Visit Transac' },
     ],
   },
   {
@@ -45,8 +45,7 @@ const services = [
     name: 'Baltar Media',
     video: '/video/media.mp4',
     subsidiaries: [
-      { name: 'Consumer Pulse', desc: 'Tracking engagement in real-time.', cta: 'Pulse Insights' },
-      { name: 'Zeitgeist Media', desc: 'Trend-forward digital storytelling.', cta: 'View Showcase' },
+      { name: 'Consumer Pulse', desc: 'Real-time news, polling, and audience research tools.', cta: 'Explore Now' },
     ],
   },
   {
@@ -82,13 +81,15 @@ export default function FeatureVideos() {
 
   const getHref = (name) => {
     const lower = name.toLowerCase();
-    if (lower === 'transac') return '/transac';
-    if (lower === 'frontend web design') return '/frontend-web-design';
-    if (lower === 'toronto media inc.') return '/frontend-web-design';
-    if(lower === 'savour & sip') return '/sip-and-savour';
-    if(lower === 'le mode co.') return '/le-mode-co';
-    if(lower==='vr (luxury eyewear & fashion tech)') return '/vr';
-    if(lower==='consumer pulse') return '/consumer-pulse';
+    if (lower === 'transac') return '/finance/transac';
+    if (lower === 'toronto media inc.') return '/technologies/toronto-media-inc';
+    if (lower === 'frontend web design') return '/technologies/toronto-media-inc';
+    if (lower === 'savour & sip') return '/hospitality/savour-and-sip';
+    if (lower === 'le mode co.') return '/fashion/le-mode-co';
+    if (lower === 'vr (luxury eyewear & fashion tech)') return '/fashion/vr';
+    if (lower === 'consumer pulse') return '/media/consumer-pulse';
+    if (lower === 'archon engineering') return '/consulting/baltar-engineering';
+    if (lower === 'wealth management') return '/baltar-finance-comingsoon';
     return '/coming-soon';
   };
 
