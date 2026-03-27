@@ -9,8 +9,8 @@ import Footer from '@/components/Transac/FooterComponent/Footer';
 import { buildMetadata } from '@/lib/seo';
 
 export const metadata = buildMetadata({
-  title: 'Transac — Modern Payment & Wealth Management',
-  description: 'Transac by Baltar Inc is a modern fintech platform for seamless payments, wealth management, and financial planning.',
+  title: 'Transac — Digital Receipts & Loyalty Platform for Canadian Businesses',
+  description: 'Transac by Baltar Inc replaces paper receipts with smart digital receipts, built-in loyalty rewards, and real-time business analytics. Trusted by Canadian retailers and service businesses.',
   path: '/finance/transac',
 });
 

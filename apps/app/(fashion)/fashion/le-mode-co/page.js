@@ -8,8 +8,8 @@ import SubsriptionSection from '@/components/LeModeCoComponent/SubscriptionCompo
 import { buildMetadata } from '@/lib/seo';
 
 export const metadata = buildMetadata({
-  title: 'Le Mode Co — Contemporary Fashion & Lifestyle',
-  description: 'Le Mode Co is a contemporary fashion brand celebrating modern style, sustainability, and Canadian craftsmanship.',
+  title: 'Le Mode Co — Premium Contemporary Fashion | Canada',
+  description: 'Le Mode Co is a premium Canadian fashion label offering curated looks, exclusive subscription boxes, and influencer-driven style. Shop the lookbook and subscribe to the Le Mode Co experience.',
   path: '/fashion/le-mode-co',
 });
 

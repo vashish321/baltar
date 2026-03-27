@@ -10,8 +10,8 @@ import Footer from '@/components/SavourAndSip/FooterComponent/Footer';
 import { buildMetadata } from '@/lib/seo';
 
 export const metadata = buildMetadata({
-  title: 'Savour & Sip — Premium Catering & Hospitality',
-  description: 'Savour & Sip delivers premium catering, bar services, and hospitality experiences across Canada.',
+  title: 'Savour & Sip — Luxury Catering & Event Hospitality | Toronto, GTA',
+  description: 'Savour & Sip provides luxury catering, curated bar programs, and full-service event hospitality across Toronto and the GTA. Corporate events, private dining, weddings, and brand activations.',
   path: '/hospitality/savour-and-sip',
 });
 
