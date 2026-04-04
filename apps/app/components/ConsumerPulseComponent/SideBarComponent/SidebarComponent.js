@@ -1,19 +1,41 @@
 "use client";
 import styles from "./SidebarComponent.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+function relativeTime(dateStr) {
+  const diff = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
+  if (diff < 3600) return `${Math.max(1, Math.floor(diff / 60))} min ago`;
+  if (diff < 86400) return `${Math.floor(diff / 3600)} hr ago`;
+  return `${Math.floor(diff / 86400)} days ago`;
+}
 
 export default function SidebarComponent() {
   const [isOpen, setIsOpen] = useState(false);
+  const [latestNews, setLatestNews] = useState([]);
+  const [status, setStatus] = useState("loading");
 
-  // Fake static news — to be replaced with API later
-  const latestNews = [
-    { time: "16 min", title: "Russia Steps Up Attacks on Ukraine" },
-    { time: "21 min", title: "Estonia May Send Troops to Ukraine" },
-    { time: "35 min", title: "Marvel's Thunderbolts Movie Is Good" },
-    { time: "35 min", title: "UK Stats Office Gender Survey Change" },
-    { time: "50 min", title: "Treasuries Steady Ahead of Plan" },
-    { time: "50 min", title: "Startup Plane Maker Relocates" },
-  ];
+  useEffect(() => {
+    fetch("/api/consumer-pulse/articles?status=PUBLISHED&limit=6", {
+  cache: "no-store"
+})
+      .then((res) => {
+        if (!res.ok) throw new Error("fetch failed");
+        return res.json();
+      })
+      .then((data) => {
+        const articles = data?.articles ?? data?.data ?? [];
+        setLatestNews(
+          articles.map((a) => ({
+            time: relativeTime(a.publishedAt),
+            title: a.title,
+          }))
+        );
+        setStatus("loaded");
+      })
+      .catch(() => {
+        setStatus("error");
+      });
+  }, []);
 
   return (
     <div className={`${styles.sidebarContainer} ${isOpen ? styles.open : ""}`}>
@@ -33,12 +55,25 @@ export default function SidebarComponent() {
             </select>
           </div>
           <ul className={styles.newsList}>
-            {latestNews.map((item, index) => (
-              <li key={index}>
-                <span className={styles.time}>{item.time}</span>
-                <span className={styles.title}>{item.title}</span>
+            {status === "loading" &&
+              Array.from({ length: 6 }).map((_, i) => (
+                <li key={i}>
+                  <span className={styles.time}>—</span>
+                  <span className={styles.title}>Loading…</span>
+                </li>
+              ))}
+            {status === "error" && (
+              <li>
+                <span className={styles.title}>Trending stories unavailable</span>
               </li>
-            ))}
+            )}
+            {status === "loaded" &&
+              latestNews.map((item, index) => (
+                <li key={index}>
+                  <span className={styles.time}>{item.time}</span>
+                  <span className={styles.title}>{item.title}</span>
+                </li>
+              ))}
           </ul>
           <a className={styles.viewAll} href="#">See all latest ›</a>
         </aside>

@@ -10,8 +10,61 @@
 }
 
 :root {
+  /* ── Existing tokens (unchanged) ── */
   --background: #0B0F19;
   --foreground: #171717;
+
+  /* ── Color system ── */
+  --color-bg:              #0B0F19;   /* page background */
+  --color-surface-1:       #111827;   /* card backgrounds */
+  --color-surface-2:       #1A2236;   /* elevated section backgrounds */
+  --color-border:          #1F2D45;   /* subtle dividers */
+  --color-text-primary:    #F8FAFC;   /* headings / primary text */
+  --color-text-secondary:  #94A3B8;   /* subheadings / secondary text */
+  --color-text-muted:      #475569;   /* captions / meta text */
+  --color-accent:          #3B6FFF;   /* primary CTA — blue */
+  --color-accent-warm:     #F97316;   /* engineering / hospitality accent — orange */
+
+  /* ── Spacing scale (base 8px) ── */
+  --space-xs:   8px;
+  --space-sm:   16px;
+  --space-md:   24px;
+  --space-lg:   32px;
+  --space-xl:   48px;
+  --space-2xl:  64px;
+  --space-3xl:  96px;
+  --space-4xl:  128px;
+
+  /* ── Typography scale ── */
+  --text-display: 72px;
+  --text-h1:      48px;
+  --text-h2:      36px;
+  --text-h3:      28px;
+  --text-h4:      22px;
+  --text-body:    16px;
+  --text-caption: 13px;
+
+  /* ── Letter spacing ── */
+  --tracking-normal:  0;
+  --tracking-wide:    0.05em;
+  --tracking-wider:   0.12em;
+  --tracking-luxury:  0.25em;
+
+  /* ── Animation ── */
+  --duration-fast:      150ms;
+  --duration-base:      300ms;
+  --duration-slow:      600ms;
+  --duration-cinematic: 1000ms;
+  --ease-out:           cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ── Border radius ── */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+
+  /* ── Layout ── */
+  --section-padding: var(--space-3xl);   /* 96px default section vertical padding */
+  --container-max:   1240px;
 }
 
 @media (prefers-color-scheme: dark) {

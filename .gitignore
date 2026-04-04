@@ -93,3 +93,4 @@ temp/
 # Turborepo cache
 .turbo
 backend/.turbo
+/generated/prisma

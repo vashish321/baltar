@@ -51,7 +51,7 @@
 .nav {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 2.5rem;
 }
 
 .navItem {
@@ -74,6 +74,11 @@
 .navLink:hover {
   background: rgba(0, 0, 0, 0.05);
   color: #0866ff;
+}
+
+.navLinkActive {
+  color: #0866ff;
+  background: rgba(8, 102, 255, 0.08);
 }
 
 /* Dropdown */
@@ -105,6 +110,11 @@
 .dropdownItem:hover {
   background: rgba(8, 102, 255, 0.1);
   color: #0866ff;
+}
+
+.dropdownItemActive {
+  color: #0866ff;
+  font-weight: 500;
 }
 
 /* Mobile Menu Button */

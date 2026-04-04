@@ -1,5 +1,6 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -28,10 +29,17 @@ const hrefMap = {
 };
 
 export default function MetaHeader() {
+  const pathname = usePathname();
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const timeoutRef = useRef(null);
+
+  const isCategoryActive = (items) =>
+    items.some((item) => {
+      const href = hrefMap[item.toLowerCase()];
+      return href && href !== '/coming-soon' && pathname?.startsWith(href);
+    });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -55,27 +63,16 @@ export default function MetaHeader() {
   const renderLink = (item, i) => {
     const lowerItem = item.toLowerCase();
     const href = hrefMap[lowerItem] || '/coming-soon';
-    const isIntegratedPage = hrefMap[lowerItem] && hrefMap[lowerItem] !== '/coming-soon';
-
-    if (isIntegratedPage) {
-      return (
-        <a 
-          href={href} 
-          key={i} 
-          className={styles.dropdownItem}
-          target="_blank" 
-          rel="noopener noreferrer"
-        >
-          {item}
-        </a>
-      );
-    } else {
-      return (
-        <Link href={href} key={i} className={styles.dropdownItem}>
-          {item}
-        </Link>
-      );
-    }
+    const isActive = pathname === href || pathname?.startsWith(href + '/');
+    return (
+      <Link
+        href={href}
+        key={i}
+        className={`${styles.dropdownItem}${isActive ? ` ${styles.dropdownItemActive}` : ''}`}
+      >
+        {item}
+      </Link>
+    );
   };
 
   return (
@@ -101,8 +98,10 @@ export default function MetaHeader() {
               onMouseEnter={() => handleMouseEnter(category)}
               onMouseLeave={handleMouseLeave}
             >
-              <span className={styles.navLink}>{category}</span>
-              
+              <span className={`${styles.navLink}${isCategoryActive(items) ? ` ${styles.navLinkActive}` : ''}`}>
+                {category}
+              </span>
+
               <AnimatePresence>
                 {activeDropdown === category && (
                   <motion.div
@@ -110,7 +109,7 @@ export default function MetaHeader() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
-                    transition={{ duration: 0.2 }}
+                    transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                   >
                     {items.map((item, i) => renderLink(item, i))}
                   </motion.div>
@@ -118,6 +117,12 @@ export default function MetaHeader() {
               </AnimatePresence>
             </div>
           ))}
+          <Link
+            href="/contact"
+            className={`${styles.navLink}${pathname === '/contact' ? ` ${styles.navLinkActive}` : ''}`}
+          >
+            Contact
+          </Link>
         </nav>
 
         {/* Mobile Menu Button */}
@@ -149,6 +154,17 @@ export default function MetaHeader() {
                 </div>
               </div>
             ))}
+            <div className={styles.mobileCategory}>
+              <div className={styles.mobileItems}>
+                <Link
+                  href="/contact"
+                  className={`${styles.dropdownItem}${pathname === '/contact' ? ` ${styles.dropdownItemActive}` : ''}`}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Contact
+                </Link>
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
