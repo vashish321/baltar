@@ -1,44 +1,38 @@
-// ── Load environment variables FIRST — before any other require ──────────────
+// Load environment variables FIRST — before any other require
 require('dotenv').config();
-// ─────────────────────────────────────────────────────────────────────────────
 
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
-const http = require('http');
-const newsScheduler = require('./services/newsSchedulerService');
 const unifiedNewsScheduler = require('./services/unifiedNewsScheduler');
 const websocketService = require('./services/websocketService');
 
 const app = express();
-const server = http.createServer(app);
 
-// Enhanced CORS configuration for production
+// CORS
 const corsOptions = {
   origin: [
-    'http://localhost:3000',          // Local development
-    'https://baltar.ca',              // Production domain
-    'https://www.baltar.ca',          // Production www
-    /\.baltar\.ca$/,                  // All baltar.ca subdomains
-    'https://baltar-inc.vercel.app',  // Vercel primary
-    /\.vercel\.app$/,                 // Vercel preview deployments
+    'http://localhost:3000',
+    'https://baltar.ca',
+    'https://www.baltar.ca',
+    /\.baltar\.ca$/,
+    'https://baltar-inc.vercel.app',
+    /\.vercel\.app$/,
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
-// Stripe webhook needs raw body, so add it before express.json()
+// Stripe webhook must receive raw body — mount before express.json()
 app.use('/api/stripe', require('./routes/stripeWebhookRoutes'));
 
 app.use(express.json());
 app.use(cors(corsOptions));
 app.use(morgan('dev'));
 
-// Use subservice routes
+// Routes
 app.use('/api/frontend', require('./routes/frontendWebDesign'));
-
-// Core business routes
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/clients', require('./routes/clientRoutes'));
 app.use('/api/projects', require('./routes/projectRoutes'));
@@ -49,55 +43,35 @@ app.use('/api/consumer-pulse', require('./routes/consumerPulseRoutes'));
 app.use('/api/le-mode-co', require('./routes/leModeCoRoutes'));
 app.use('/api/products', require('./routes/productRoutes'));
 
-// Health check endpoints
+// Health checks
 app.get('/', (req, res) => {
   res.json({
     message: 'Baltar Backend is up and running 🚀',
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV || 'development',
-    port: process.env.PORT || 5000
   });
 });
 
 app.get('/health', (req, res) => {
-  res.json({
-    status: 'healthy',
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime()
-  });
+  res.json({ status: 'healthy', timestamp: new Date().toISOString(), uptime: process.uptime() });
 });
 
-// Initialize Consumer Pulse with all news APIs and WebSocket
+// Initialize Consumer Pulse (WebSocket + scheduler) — never throws
 const initializeConsumerPulse = async () => {
   try {
-    console.log('🔄 Initializing Consumer Pulse with unified news system...');
-
-    // Initialize WebSocket service
+    console.log('🔄 Initializing Consumer Pulse...');
     websocketService.initialize(server);
     websocketService.startHeartbeat();
-
-    // Start the unified news scheduler (all APIs)
     unifiedNewsScheduler.startScheduler();
-
-    // Keep the old NewsData.io scheduler as backup
-    // newsScheduler.startScheduler();
-
-    console.log('✅ Consumer Pulse initialized with:');
-    console.log('   📡 WebSocket service for real-time updates');
-    console.log('   🔄 Unified scheduler (NewsData.io, NewsAPI.org, Finlight, Currents)');
-    console.log('   ⏰ Smart rotation every 30 minutes');
-
+    console.log('✅ Consumer Pulse initialized (WebSocket + unified scheduler)');
   } catch (error) {
-    console.error('❌ Error initializing Consumer Pulse:', error.message);
+    console.error('❌ Consumer Pulse initialization error (non-fatal):', error.message);
   }
 };
 
-// Start server
+// Start server — app.listen() returns an http.Server used by WebSocket
 const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
-
-  // Initialize Consumer Pulse with unified system after server starts
   initializeConsumerPulse();
 });

@@ -94,3 +94,6 @@ temp/
 .turbo
 backend/.turbo
 /generated/prisma
+
+# Root-level server.js is a dead ESM stub — backend entry is backend/server.js
+/server.js
