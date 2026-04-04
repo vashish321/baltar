@@ -93,13 +93,11 @@ const initializeConsumerPulse = async () => {
 };
 
 // Start server
-const PORT = process.env.PORT || 5000;
-server.listen(PORT, '0.0.0.0', async () => {
-  console.log(`🚀 Baltar Backend running on port ${PORT}`);
-  console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`🌐 CORS enabled for production domains`);
-  console.log(`🔗 Health check: ${process.env.NODE_ENV === 'production' ? 'https://baltar-inc-1.onrender.com/health' : `http://localhost:${PORT}/health`}`);
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
 
   // Initialize Consumer Pulse with unified system after server starts
-  await initializeConsumerPulse();
+  initializeConsumerPulse();
 });
