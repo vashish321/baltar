@@ -1,3 +1,7 @@
+// ── Load environment variables FIRST — before any other require ──────────────
+require('dotenv').config();
+// ─────────────────────────────────────────────────────────────────────────────
+
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
@@ -5,7 +9,6 @@ const http = require('http');
 const newsScheduler = require('./services/newsSchedulerService');
 const unifiedNewsScheduler = require('./services/unifiedNewsScheduler');
 const websocketService = require('./services/websocketService');
-require('dotenv').config();
 
 const app = express();
 const server = http.createServer(app);

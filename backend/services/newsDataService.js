@@ -9,9 +9,10 @@ class NewsDataService {
     this.baseUrl = 'https://newsdata.io/api/1';
     this.aiService = new AIService();
     this.categoryDetector = new CategoryDetector();
-    
+
     if (!this.apiKey) {
-      throw new Error('NewsData.io API key not found in environment variables');
+      // Warn instead of throw — server must not crash due to a missing optional API key
+      console.warn('⚠️  NewsData.io API key not found in environment variables — provider disabled');
     }
   }
 
@@ -21,6 +22,14 @@ class NewsDataService {
    * @returns {Promise<Object>} API response with articles
    */
   async fetchBreakingNews(options = {}) {
+    if (!this.apiKey) {
+      return {
+        success: false,
+        articles: [],
+        message: 'NewsData.io API key not configured — skipping fetch'
+      };
+    }
+
     try {
       const {
         country = 'us',
@@ -76,7 +85,7 @@ class NewsDataService {
     try {
       // Generate meaningful content from available data
       let content = article.title;
-      
+
       if (article.description && article.description !== article.title) {
         content = `${article.title}\n\n${article.description}`;
       }
@@ -118,12 +127,22 @@ class NewsDataService {
    * @returns {Promise<Object>} Processing results
    */
   async fetchAndProcessNews(options = {}) {
+    if (!this.apiKey) {
+      return {
+        success: false,
+        message: 'NewsData.io API key not configured — skipping',
+        fetched: 0,
+        processed: 0,
+        saved: 0
+      };
+    }
+
     try {
       console.log('Starting NewsData.io news fetch and processing...');
-      
+
       // Fetch articles from NewsData.io
       const newsResponse = await this.fetchBreakingNews(options);
-      
+
       if (!newsResponse.success || !newsResponse.articles.length) {
         return {
           success: false,
@@ -167,7 +186,7 @@ class NewsDataService {
           processedArticles.push(processedArticle);
         } catch (error) {
           console.error('Error processing article with AI:', error.message);
-          
+
           // Fallback without AI processing
           const processedArticle = {
             ...article,
@@ -175,7 +194,7 @@ class NewsDataService {
             sentimentScore: 0,
             status: 'PUBLISHED'
           };
-          
+
           processedArticles.push(processedArticle);
         }
       }
@@ -211,6 +230,7 @@ class NewsDataService {
         fetched: fetchedArticles.length,
         processed: processedArticles.length,
         saved: savedArticles.length,
+        savedCount: savedArticles.length,
         articles: savedArticles
       };
 
@@ -221,7 +241,8 @@ class NewsDataService {
         message: `NewsData.io integration failed: ${error.message}`,
         fetched: 0,
         processed: 0,
-        saved: 0
+        saved: 0,
+        savedCount: 0
       };
     }
   }
@@ -357,10 +378,12 @@ class NewsDataService {
    * Required by UnifiedNewsScheduler.canFetchFromProvider().
    */
   canMakeRequest() {
+    // Provider is disabled if no API key is present
+    if (!this.apiKey) return false;
     // NewsData.io allows 200 requests/day on the free tier.
     // We rely on the scheduler's rotation strategy to stay within limits
     // rather than tracking in-memory (which resets on cold start anyway).
-    return !!this.apiKey;
+    return true;
   }
 
   /**

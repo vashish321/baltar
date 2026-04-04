@@ -1,4 +1,4 @@
-import HeroSection from '@/components/HeroComponent/HeroSection';
+import HeroSection from '@/components/HeroSection/HeroSection';
 import TechnologiesSection from '@/components/BaltarSections/TechnologiesSection';
 import HospitalitySection from '@/components/BaltarSections/HospitalitySection';
 import EngineeringSection from '@/components/BaltarSections/EngineeringSection';
@@ -35,7 +35,9 @@ export default function Home() {
   return (
     <>
       <HeroSection />
-      <TechnologiesSection />
+      <div id="divisions">
+        <TechnologiesSection />
+      </div>
       <HospitalitySection />
       <EngineeringSection />
       <FinanceSection />

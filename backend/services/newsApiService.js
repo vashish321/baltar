@@ -43,6 +43,7 @@ class NewsApiService {
    * Check if we can make a request (rate limiting)
    */
   canMakeRequest() {
+    if (!this.apiKey) return false; // Provider disabled when no key present
     this.resetDailyCounterIfNeeded();
     return this.dailyRequestCount < 1000; // 1000 requests per day
   }

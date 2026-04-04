@@ -54,6 +54,7 @@ class FinlightApiService {
    * Check if we can make a request (rate limiting)
    */
   canMakeRequest() {
+    if (!this.apiKey) return false; // Provider disabled when no key present
     this.resetCountersIfNeeded();
     return this.monthlyRequestCount < 5000 && this.dailyRequestCount < 166; // 5000/month, ~166/day
   }

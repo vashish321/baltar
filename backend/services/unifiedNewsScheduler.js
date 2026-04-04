@@ -225,9 +225,8 @@ class UnifiedNewsScheduler {
         return await service.fetchAndProcessFinancialNews(task.type || 'general');
         
       case 'currents':
-        return await service.fetchAndProcessNews({
-          category: task.category
-        });
+        // CurrentsApiService exposes fetchAndProcessTopStories, not fetchAndProcessNews
+        return await service.fetchAndProcessTopStories();
         
       default:
         throw new Error(`Unknown provider: ${task.provider}`);
