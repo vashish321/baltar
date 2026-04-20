@@ -1,19 +1,42 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// ─────────────────────────────────────────────────────────────────────────────
+// Baltar Inc — Prisma Schema
+// Database: PostgreSQL (Supabase)
+// ─────────────────────────────────────────────────────────────────────────────
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
-// Enums
+// ─────────────────────────────────────────────────────────────────────────────
+// ENUMS
+// ─────────────────────────────────────────────────────────────────────────────
+
+enum Role {
+  ADMIN
+  CLIENT
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  UNPAID
+  PAID
+  PENDING
+  FAILED
+  OVERDUE
+  REFUNDED
+}
+
 enum ServiceType {
   FRONTEND_WEB_DESIGN
   SAVOUR_AND_SIP
@@ -37,233 +60,6 @@ enum InvoiceStatus {
   CANCELLED
 }
 
-enum PaymentStatus {
-  PENDING
-  PAID
-  FAILED
-  OVERDUE
-  REFUNDED
-}
-
-// Core Models
-model Client {
-  id          String   @id @default(cuid())
-  email       String   @unique
-  firstName   String
-  lastName    String
-  phone       String?
-  company     String?
-  address     String?
-  city        String?
-  province    String?
-  postalCode  String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  // Relationships
-  projects    Project[]
-  invoices    Invoice[]
-  bookings    Booking[]
-  quotes      Quote[]
-  apiKeys     APIKey[]
-
-  @@map("clients")
-}
-
-model Project {
-  id            String        @id @default(cuid())
-  clientId      String
-  serviceType   ServiceType
-  title         String
-  description   String?
-  status        ProjectStatus @default(INQUIRY)
-  estimatedCost Float?
-  finalCost     Float?
-  startDate     DateTime?
-  endDate       DateTime?
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-
-  // Frontend Web Design specific fields
-  websiteUrl    String?
-  domainName    String?
-  hostingPlan   String?
-
-  // Savour & Sip specific fields
-  eventDate     DateTime?
-  eventLocation String?
-  guestCount    Int?
-  eventType     String?
-
-  // Relationships
-  client        Client        @relation(fields: [clientId], references: [id], onDelete: Cascade)
-  invoices      Invoice[]
-  projectFiles  ProjectFile[]
-  tasks         Task[]
-
-  @@map("projects")
-}
-
-model Invoice {
-  id            String        @id @default(cuid())
-  clientId      String
-  projectId     String?
-  invoiceNumber String        @unique
-  title         String
-  description   String?
-  subtotal      Float
-  tax           Float         @default(0)
-  total         Float
-  status        InvoiceStatus @default(DRAFT)
-  issueDate     DateTime      @default(now())
-  dueDate       DateTime
-  paidDate      DateTime?
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-
-  // Relationships
-  client        Client        @relation(fields: [clientId], references: [id], onDelete: Cascade)
-  project       Project?      @relation(fields: [projectId], references: [id], onDelete: SetNull)
-  invoiceItems  InvoiceItem[]
-  payments      Payment[]
-
-  @@map("invoices")
-}
-
-model InvoiceItem {
-  id          String  @id @default(cuid())
-  invoiceId   String
-  description String
-  quantity    Int     @default(1)
-  unitPrice   Float
-  total       Float
-
-  // Relationships
-  invoice     Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
-
-  @@map("invoice_items")
-}
-
-model Payment {
-  id            String        @id @default(cuid())
-  invoiceId     String
-  amount        Float
-  status        PaymentStatus @default(PENDING)
-  paymentMethod String?
-  transactionId String?
-  paidAt        DateTime?
-  createdAt     DateTime      @default(now())
-
-  // Relationships
-  invoice       Invoice       @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
-
-  @@map("payments")
-}
-
-model Booking {
-  id            String      @id @default(cuid())
-  clientId      String
-  serviceType   ServiceType
-  eventDate     DateTime
-  eventLocation String
-  guestCount    Int?
-  services      String      // JSON array of requested services
-  specialRequests String?
-  status        String      @default("pending")
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-
-  // Relationships
-  client        Client      @relation(fields: [clientId], references: [id], onDelete: Cascade)
-
-  @@map("bookings")
-}
-
-model Task {
-  id          String   @id @default(cuid())
-  projectId   String
-  title       String
-  description String?
-  status      String   @default("pending") // pending, in_progress, completed
-  priority    String   @default("medium") // low, medium, high
-  dueDate     DateTime?
-  completedAt DateTime?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  // Relationships
-  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
-
-  @@map("tasks")
-}
-
-model ProjectFile {
-  id          String   @id @default(cuid())
-  projectId   String
-  fileName    String
-  originalName String
-  filePath    String
-  fileSize    Int
-  mimeType    String
-  uploadedAt  DateTime @default(now())
-
-  // Relationships
-  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
-
-  @@map("project_files")
-}
-
-model Admin {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  password  String
-  firstName String
-  lastName  String
-  role      String   @default("admin")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("admins")
-}
-
-model Quote {
-  id            String      @id @default(cuid())
-  clientId      String?
-  serviceType   ServiceType
-  status        QuoteStatus @default(PENDING)
-
-  // Common fields
-  name          String
-  email         String
-  phone         String?
-  message       String?
-
-  // Savour & Sip specific fields
-  eventType     String?
-  guestCount    Int?
-  eventDate     DateTime?
-  services      String?     // JSON array of requested services
-
-  // Frontend Web Design specific fields
-  company       String?
-  websiteType   String?
-  budget        String?
-
-  // Admin response
-  quotedAmount  Float?
-  adminNotes    String?
-  quotedAt      DateTime?
-  quotedBy      String?     // Admin ID who provided the quote
-
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-
-  // Relationships
-  client        Client?     @relation(fields: [clientId], references: [id], onDelete: SetNull)
-
-  @@map("quotes")
-}
-
 enum QuoteStatus {
   PENDING
   QUOTED
@@ -272,449 +68,12 @@ enum QuoteStatus {
   CONVERTED_TO_PROJECT
 }
 
-// Consumer Pulse Enums
-enum SurveyStatus {
-  DRAFT
-  ACTIVE
-  PAUSED
-  COMPLETED
-  ARCHIVED
-}
-
-enum PollStatus {
-  ACTIVE
-  CLOSED
-  ARCHIVED
-}
-
-enum ArticleStatus {
-  DRAFT
-  PUBLISHED
-  ARCHIVED
-}
-
-enum SentimentType {
-  POSITIVE
-  NEGATIVE
-  NEUTRAL
-  MIXED
-}
-
-enum APIAccessTier {
-  FREE
-  BASIC
-  PREMIUM
-  ENTERPRISE
-}
-
-// Consumer Pulse Models
-model Survey {
-  id            String        @id @default(cuid())
-  title         String
-  description   String?
-  status        SurveyStatus  @default(DRAFT)
-  targetAudience String?
-  questions     String        // JSON array of questions
-  settings      String?       // JSON object for survey settings
-  createdBy     String        // Admin ID
-  startDate     DateTime?
-  endDate       DateTime?
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-
-  // Relationships
-  responses     SurveyResponse[]
-  analytics     SurveyAnalytics[]
-
-  @@map("surveys")
-}
-
-model SurveyResponse {
-  id          String   @id @default(cuid())
-  surveyId    String
-  respondentId String? // Optional user ID if registered
-  responses   String   // JSON object with question IDs and answers
-  ipAddress   String?
-  userAgent   String?
-  location    String?  // Geolocation data
-  completedAt DateTime @default(now())
-
-  // AI Sentiment Analysis Fields
-  sentiment          String? // POSITIVE, NEGATIVE, NEUTRAL
-  sentimentScore     Float?  // -1 to 1 sentiment score
-  sentimentConfidence Float? // 0 to 1 confidence level
-  emotions           String? // JSON array of detected emotions
-  themes             String? // JSON array of detected themes
-  demographics       String? // JSON object with demographic data
-
-  // Relationships
-  survey      Survey   @relation(fields: [surveyId], references: [id], onDelete: Cascade)
-
-  @@map("survey_responses")
-}
-
-model Poll {
-  id          String     @id @default(cuid())
-  title       String
-  question    String
-  options     String     // JSON array of poll options
-  status      PollStatus @default(ACTIVE)
-  allowMultiple Boolean  @default(false)
-  endDate     DateTime?
-  createdBy   String     // Admin ID
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-
-  // Relationships
-  votes       PollVote[]
-
-  @@map("polls")
-}
-
-model PollVote {
-  id          String   @id @default(cuid())
-  pollId      String
-  optionIndex Int      // Index of selected option
-  voterId     String?  // Optional user ID if registered
-  ipAddress   String?
-  userAgent   String?
-  votedAt     DateTime @default(now())
-
-  // Relationships
-  poll        Poll     @relation(fields: [pollId], references: [id], onDelete: Cascade)
-
-  @@unique([pollId, ipAddress]) // Prevent duplicate votes from same IP
-  @@map("poll_votes")
-}
-
-model NewsArticle {
-  id            String        @id @default(cuid())
-  title         String
-  content       String
-  summary       String?
-  author        String?
-  sourceUrl     String?
-  imageUrl      String?
-  keywords      String        // JSON array of keywords
-  category      String?
-  status        ArticleStatus @default(DRAFT)
-  sentiment     SentimentType?
-  sentimentScore Float?       // -1 to 1 scale
-  viewCount     Int           @default(0)
-  shareCount    Int           @default(0)
-  publishedAt   DateTime?
-  scrapedAt     DateTime?
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-
-  // Relationships
-  analytics     ArticleAnalytics[]
-
-  @@map("news_articles")
-}
-
-model SurveyAnalytics {
-  id              String   @id @default(cuid())
-  surveyId        String
-  totalResponses  Int      @default(0)
-  completionRate  Float?   // Percentage
-  averageTime     Int?     // Seconds
-  sentimentScore  Float?   // Overall sentiment
-  insights        String?  // JSON object with AI-generated insights
-  demographics    String?  // JSON object with demographic breakdown
-  generatedAt     DateTime @default(now())
-
-  // Relationships
-  survey          Survey   @relation(fields: [surveyId], references: [id], onDelete: Cascade)
-
-  @@map("survey_analytics")
-}
-
-model ArticleAnalytics {
-  id              String      @id @default(cuid())
-  articleId       String
-  views           Int         @default(0)
-  shares          Int         @default(0)
-  engagementRate  Float?      // Percentage
-  readTime        Int?        // Average read time in seconds
-  bounceRate      Float?      // Percentage
-  trafficSources  String?     // JSON object with traffic source breakdown
-  generatedAt     DateTime    @default(now())
-
-  // Relationships
-  article         NewsArticle @relation(fields: [articleId], references: [id], onDelete: Cascade)
-
-  @@map("article_analytics")
-}
-
-model APIKey {
-  id            String        @id @default(cuid())
-  keyHash       String        @unique // Hashed API key
-  name          String        // Human-readable name
-  clientId      String?       // Optional link to client
-  tier          APIAccessTier @default(FREE)
-  isActive      Boolean       @default(true)
-  rateLimit     Int           @default(100) // Requests per hour
-  usageCount    Int           @default(0)
-  lastUsedAt    DateTime?
-  expiresAt     DateTime?
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-
-  // Relationships
-  client        Client?       @relation(fields: [clientId], references: [id], onDelete: SetNull)
-  usage         APIUsage[]
-
-  @@map("api_keys")
-}
-
-model APIUsage {
-  id            String   @id @default(cuid())
-  apiKeyId      String
-  endpoint      String
-  method        String
-  statusCode    Int
-  responseTime  Int      // Milliseconds
-  ipAddress     String?
-  userAgent     String?
-  requestedAt   DateTime @default(now())
-
-  // Relationships
-  apiKey        APIKey   @relation(fields: [apiKeyId], references: [id], onDelete: Cascade)
-
-  @@map("api_usage")
-}
-
-model ConsumerPulseUser {
-  id            String   @id @default(cuid())
-  email         String   @unique
-  firstName     String?
-  lastName      String?
-  company       String?
-  industry      String?
-  isVerified    Boolean  @default(false)
-  preferences   String?  // JSON object for user preferences
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-
-  @@map("consumer_pulse_users")
-}
-
-// Le-Mode-Co Subscription Models
-model SubscriptionPackage {
-  id          String   @id @default(cuid())
-  name        String   // Essentials Box, Luxury Box, Bespoke Box, Platinum Box
-  price       Float    // Monthly price
-  description String?  // Main description
-  features    String   // JSON array of feature strings
-  bestFor     String?  // "Ideal For" text
-  isPopular   Boolean  @default(false)
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  // Relationships
-  subscriptions CustomerSubscription[]
-
-  @@map("subscription_packages")
-}
-
-model CustomerSubscription {
-  id                String                @id @default(cuid())
-  email             String
-  fullName          String
-  phone             String
-  zipCode           String
-  address           String
-  packageId         String
-  stripePaymentId   String?               // Stripe payment intent ID
-  status            SubscriptionStatus    @default(PENDING)
-  monthlyAmount     Float
-  preferences       String?               // JSON object for customer style preferences
-  createdAt         DateTime              @default(now())
-  updatedAt         DateTime              @updatedAt
-
-  // Relationships
-  package           SubscriptionPackage   @relation(fields: [packageId], references: [id])
-  order             SubscriptionOrder?    // One-to-one relationship
-  notifications     NotificationLog[]
-
-  @@map("customer_subscriptions")
-}
-
-model SubscriptionOrder {
-  id             String                @id @default(cuid())
-  subscriptionId String                @unique // One order per subscription
-  status         OrderStatus           @default(PENDING)
-  isNotified     Boolean               @default(false)
-  notifiedAt     DateTime?
-  trackingNumber String?               // Shipping tracking number
-  shippedAt      DateTime?
-  deliveredAt    DateTime?
-  totalValue     Float?                // Total value of items in the order
-  createdAt      DateTime              @default(now())
-  updatedAt      DateTime              @updatedAt
-
-  // Relationships
-  subscription   CustomerSubscription  @relation(fields: [subscriptionId], references: [id])
-  items          OrderItem[]
-  statusHistory  OrderStatusHistory[]
-  notifications  NotificationLog[]
-
-  @@map("subscription_orders")
-}
-
-model OrderItem {
-  id          String            @id @default(cuid())
-  orderId     String
-  productId   String?           // Reference to Product if using catalog
-  itemName    String
-  description String?
-  category    String?           // e.g., "clothing", "accessory", "shoes"
-  quantity    Int               @default(1)
-  unitValue   Float?            // Individual item value for inventory tracking
-  addedAt     DateTime          @default(now())
-
-  // Relationships
-  order       SubscriptionOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  product     Product?          @relation(fields: [productId], references: [id])
-
-  @@map("order_items")
-}
-
-// Product Categories
-model Category {
-  id          String    @id @default(cuid())
-  name        String    @unique
-  description String?
-  isActive    Boolean   @default(true)
-  displayOrder Int      @default(0)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  // Relationships
-  products    Product[]
-
-  @@map("categories")
-}
-
-// Product Catalog
-model Product {
-  id            String          @id @default(cuid())
-  name          String
-  description   String?
-  categoryId    String?
-  category      Category?       @relation(fields: [categoryId], references: [id])
-  brand         String?
-  color         String?
-  size          ProductSize?
-  price         Float           // Retail value for inventory tracking
-  sku           String?         @unique
-  isActive      Boolean         @default(true)
-  stockQuantity Int             @default(0)
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-
-  // Relationships
-  images        ProductImage[]
-  orderItems    OrderItem[]
-  templateItems TemplateItem[]
-
-  @@map("products")
-}
-
-model ProductImage {
-  id        String   @id @default(cuid())
-  productId String
-  imageUrl  String
-  altText   String?
-  isPrimary Boolean  @default(false)
-  sortOrder Int      @default(0)
-  createdAt DateTime @default(now())
-
-  // Relationships
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-
-  @@map("product_images")
-}
-
-// Order Status Tracking
-model OrderStatusHistory {
-  id        String      @id @default(cuid())
-  orderId   String
-  status    OrderStatus
-  notes     String?
-  changedBy String?     // Admin ID who made the change
-  createdAt DateTime    @default(now())
-
-  // Relationships
-  order     SubscriptionOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
-
-  @@map("order_status_history")
-}
-
-// Template System
-model OrderTemplate {
-  id            String             @id @default(cuid())
-  name          String
-  description   String?
-  templateType  TemplateType
-  packageTier   String?            // Which subscription package this applies to
-  season        Season?
-  preference    CustomerPreference?
-  isActive      Boolean            @default(true)
-  createdBy     String?            // Admin ID who created the template
-  createdAt     DateTime           @default(now())
-  updatedAt     DateTime           @updatedAt
-
-  // Relationships
-  items         TemplateItem[]
-
-  @@map("order_templates")
-}
-
-model TemplateItem {
-  id         String        @id @default(cuid())
-  templateId String
-  productId  String
-  quantity   Int           @default(1)
-  notes      String?
-  createdAt  DateTime      @default(now())
-
-  // Relationships
-  template   OrderTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
-  product    Product       @relation(fields: [productId], references: [id])
-
-  @@map("template_items")
-}
-
-// Notification Tracking
-model NotificationLog {
-  id               String           @id @default(cuid())
-  orderId          String?
-  subscriptionId   String?
-  notificationType NotificationType
-  recipientEmail   String
-  subject          String
-  content          String?          // Email content or template used
-  sentAt           DateTime         @default(now())
-  deliveryStatus   String?          // success, failed, pending
-  errorMessage     String?
-
-  // Relationships
-  order            SubscriptionOrder? @relation(fields: [orderId], references: [id])
-  subscription     CustomerSubscription? @relation(fields: [subscriptionId], references: [id])
-
-  @@map("notification_logs")
-}
-
-// Enums for Le-Mode-Co
 enum SubscriptionStatus {
-  PENDING      // awaiting payment
-  PAID         // payment completed
-  FAILED       // payment failed
-  COMPLIMENTARY // free/promotional subscription
-  CANCELLED    // subscription cancelled
+  PENDING
+  PAID
+  FAILED
+  COMPLIMENTARY
+  CANCELLED
 }
 
 enum OrderStatus {
@@ -726,8 +85,6 @@ enum OrderStatus {
   DELIVERED
   CANCELLED
 }
-
-
 
 enum ProductSize {
   XS
@@ -770,4 +127,533 @@ enum NotificationType {
   SHIPPING_NOTIFICATION
   DELIVERY_CONFIRMATION
   GENERAL_UPDATE
+}
+
+enum APIAccessTier {
+  FREE
+  BASIC
+  PREMIUM
+  ENTERPRISE
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// USER (platform auth — ADMIN or CLIENT)
+// ─────────────────────────────────────────────────────────────────────────────
+
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  password  String
+  name      String
+  role      Role      @default(CLIENT)
+  createdAt DateTime  @default(now())
+
+  // Relations
+  bookings  Booking[]
+
+  @@map("users")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// BOOKING
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Booking {
+  id            String        @id @default(cuid())
+  userId        String
+  serviceName   String
+  date          DateTime
+  status        BookingStatus @default(PENDING)
+  paymentStatus PaymentStatus @default(UNPAID)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  // Relations
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  payment       Payment?
+
+  @@index([userId])
+  @@index([status])
+  @@index([date])
+  @@map("bookings")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PAYMENT
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Payment {
+  id              String        @id @default(cuid())
+  bookingId       String        @unique
+  stripeSessionId String?       @unique
+  amount          Float
+  status          PaymentStatus @default(UNPAID)
+  createdAt       DateTime      @default(now())
+
+  // Relations
+  booking         Booking       @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  @@index([stripeSessionId])
+  @@map("payments")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CLIENT (CRM — separate from platform User)
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Client {
+  id          String    @id @default(cuid())
+  email       String    @unique
+  firstName   String
+  lastName    String
+  phone       String?
+  company     String?
+  address     String?
+  city        String?
+  province    String?
+  postalCode  String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations
+  projects    Project[]
+  invoices    Invoice[]
+  quotes      Quote[]
+  apiKeys     APIKey[]
+
+  @@map("clients")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PROJECT
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Project {
+  id            String        @id @default(cuid())
+  clientId      String
+  serviceType   ServiceType
+  title         String
+  description   String?
+  status        ProjectStatus @default(INQUIRY)
+  estimatedCost Float?
+  finalCost     Float?
+  startDate     DateTime?
+  endDate       DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  // Frontend Web Design fields
+  websiteUrl    String?
+  domainName    String?
+  hostingPlan   String?
+
+  // Savour & Sip fields
+  eventDate     DateTime?
+  eventLocation String?
+  guestCount    Int?
+  eventType     String?
+
+  // Relations
+  client        Client        @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  invoices      Invoice[]
+  projectFiles  ProjectFile[]
+  tasks         Task[]
+
+  @@index([clientId])
+  @@map("projects")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// INVOICE
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Invoice {
+  id            String        @id @default(cuid())
+  clientId      String
+  projectId     String?
+  invoiceNumber String        @unique
+  title         String
+  description   String?
+  subtotal      Float
+  tax           Float         @default(0)
+  total         Float
+  status        InvoiceStatus @default(DRAFT)
+  issueDate     DateTime      @default(now())
+  dueDate       DateTime
+  paidDate      DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  // Relations
+  client        Client        @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  project       Project?      @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  invoiceItems  InvoiceItem[]
+
+  @@index([clientId])
+  @@map("invoices")
+}
+
+model InvoiceItem {
+  id          String  @id @default(cuid())
+  invoiceId   String
+  description String
+  quantity    Int     @default(1)
+  unitPrice   Float
+  total       Float
+
+  // Relations
+  invoice     Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@map("invoice_items")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// QUOTE
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Quote {
+  id            String      @id @default(cuid())
+  clientId      String?
+  serviceType   ServiceType
+  status        QuoteStatus @default(PENDING)
+  name          String
+  email         String
+  phone         String?
+  message       String?
+
+  // Savour & Sip fields
+  eventType     String?
+  guestCount    Int?
+  eventDate     DateTime?
+  services      String?
+
+  // Frontend Web Design fields
+  company       String?
+  websiteType   String?
+  budget        String?
+
+  // Admin response
+  quotedAmount  Float?
+  adminNotes    String?
+  quotedAt      DateTime?
+  quotedBy      String?
+
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  // Relations
+  client        Client?     @relation(fields: [clientId], references: [id], onDelete: SetNull)
+
+  @@map("quotes")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PROJECT SUPPORT MODELS
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Task {
+  id          String    @id @default(cuid())
+  projectId   String
+  title       String
+  description String?
+  status      String    @default("pending")
+  priority    String    @default("medium")
+  dueDate     DateTime?
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("tasks")
+}
+
+model ProjectFile {
+  id           String   @id @default(cuid())
+  projectId    String
+  fileName     String
+  originalName String
+  filePath     String
+  fileSize     Int
+  mimeType     String
+  uploadedAt   DateTime @default(now())
+
+  // Relations
+  project      Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("project_files")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ADMIN
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Admin {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  firstName String
+  lastName  String
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("admins")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// API KEYS
+// ─────────────────────────────────────────────────────────────────────────────
+
+model APIKey {
+  id          String        @id @default(cuid())
+  keyHash     String        @unique
+  name        String
+  clientId    String?
+  tier        APIAccessTier @default(FREE)
+  isActive    Boolean       @default(true)
+  rateLimit   Int           @default(100)
+  usageCount  Int           @default(0)
+  lastUsedAt  DateTime?
+  expiresAt   DateTime?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  // Relations
+  client      Client?       @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  usage       APIUsage[]
+
+  @@map("api_keys")
+}
+
+model APIUsage {
+  id           String   @id @default(cuid())
+  apiKeyId     String
+  endpoint     String
+  method       String
+  statusCode   Int
+  responseTime Int
+  ipAddress    String?
+  userAgent    String?
+  requestedAt  DateTime @default(now())
+
+  // Relations
+  apiKey       APIKey   @relation(fields: [apiKeyId], references: [id], onDelete: Cascade)
+
+  @@map("api_usage")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// LE MODE CO — SUBSCRIPTIONS
+// ─────────────────────────────────────────────────────────────────────────────
+
+model SubscriptionPackage {
+  id            String                 @id @default(cuid())
+  name          String
+  price         Float
+  description   String?
+  features      String
+  bestFor       String?
+  isPopular     Boolean                @default(false)
+  isActive      Boolean                @default(true)
+  createdAt     DateTime               @default(now())
+  updatedAt     DateTime               @updatedAt
+
+  // Relations
+  subscriptions CustomerSubscription[]
+
+  @@map("subscription_packages")
+}
+
+model CustomerSubscription {
+  id              String               @id @default(cuid())
+  email           String
+  fullName        String
+  phone           String
+  zipCode         String
+  address         String
+  packageId       String
+  stripePaymentId String?
+  status          SubscriptionStatus   @default(PENDING)
+  monthlyAmount   Float
+  preferences     String?
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+
+  // Relations
+  package         SubscriptionPackage  @relation(fields: [packageId], references: [id])
+  order           SubscriptionOrder?
+  notifications   NotificationLog[]
+
+  @@map("customer_subscriptions")
+}
+
+model SubscriptionOrder {
+  id             String               @id @default(cuid())
+  subscriptionId String               @unique
+  status         OrderStatus          @default(PENDING)
+  isNotified     Boolean              @default(false)
+  notifiedAt     DateTime?
+  trackingNumber String?
+  shippedAt      DateTime?
+  deliveredAt    DateTime?
+  totalValue     Float?
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+
+  // Relations
+  subscription   CustomerSubscription @relation(fields: [subscriptionId], references: [id])
+  items          OrderItem[]
+  statusHistory  OrderStatusHistory[]
+  notifications  NotificationLog[]
+
+  @@map("subscription_orders")
+}
+
+model OrderItem {
+  id          String            @id @default(cuid())
+  orderId     String
+  productId   String?
+  itemName    String
+  description String?
+  category    String?
+  quantity    Int               @default(1)
+  unitValue   Float?
+  addedAt     DateTime          @default(now())
+
+  // Relations
+  order       SubscriptionOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product     Product?          @relation(fields: [productId], references: [id])
+
+  @@map("order_items")
+}
+
+model OrderStatusHistory {
+  id        String            @id @default(cuid())
+  orderId   String
+  status    OrderStatus
+  notes     String?
+  changedBy String?
+  createdAt DateTime          @default(now())
+
+  // Relations
+  order     SubscriptionOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("order_status_history")
+}
+
+model NotificationLog {
+  id               String                @id @default(cuid())
+  orderId          String?
+  subscriptionId   String?
+  notificationType NotificationType
+  recipientEmail   String
+  subject          String
+  content          String?
+  sentAt           DateTime              @default(now())
+  deliveryStatus   String?
+  errorMessage     String?
+
+  // Relations
+  order            SubscriptionOrder?    @relation(fields: [orderId], references: [id])
+  subscription     CustomerSubscription? @relation(fields: [subscriptionId], references: [id])
+
+  @@map("notification_logs")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PRODUCT CATALOG
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Category {
+  id           String    @id @default(cuid())
+  name         String    @unique
+  description  String?
+  isActive     Boolean   @default(true)
+  displayOrder Int       @default(0)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  // Relations
+  products     Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id            String         @id @default(cuid())
+  name          String
+  description   String?
+  categoryId    String?
+  brand         String?
+  color         String?
+  size          ProductSize?
+  price         Float
+  sku           String?        @unique
+  isActive      Boolean        @default(true)
+  stockQuantity Int            @default(0)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  // Relations
+  category      Category?      @relation(fields: [categoryId], references: [id])
+  images        ProductImage[]
+  orderItems    OrderItem[]
+  templateItems TemplateItem[]
+
+  @@map("products")
+}
+
+model ProductImage {
+  id        String   @id @default(cuid())
+  productId String
+  imageUrl  String
+  altText   String?
+  isPrimary Boolean  @default(false)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  // Relations
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("product_images")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ORDER TEMPLATES
+// ─────────────────────────────────────────────────────────────────────────────
+
+model OrderTemplate {
+  id           String              @id @default(cuid())
+  name         String
+  description  String?
+  templateType TemplateType
+  packageTier  String?
+  season       Season?
+  preference   CustomerPreference?
+  isActive     Boolean             @default(true)
+  createdBy    String?
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+
+  // Relations
+  items        TemplateItem[]
+
+  @@map("order_templates")
+}
+
+model TemplateItem {
+  id         String        @id @default(cuid())
+  templateId String
+  productId  String
+  quantity   Int           @default(1)
+  notes      String?
+  createdAt  DateTime      @default(now())
+
+  // Relations
+  template   OrderTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  product    Product       @relation(fields: [productId], references: [id])
+
+  @@map("template_items")
 }
