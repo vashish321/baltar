@@ -1,5 +1,11 @@
 const { PrismaClient } = require('@prisma/client');
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+
+let stripe = null;
+if (process.env.STRIPE_SECRET_KEY) {
+  stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+} else {
+  console.warn('⚠️  STRIPE_SECRET_KEY not set — Le Mode Co payment features disabled');
+}
 
 const prisma = new PrismaClient();
 
@@ -156,6 +162,9 @@ class LeModeCoService {
   }
 
   static async createStripePaymentIntent(subscriptionId) {
+    if (!stripe) {
+      throw new Error('Stripe is not configured on this server');
+    }
     try {
       const subscription = await prisma.customerSubscription.findUnique({
         where: { id: subscriptionId },
@@ -193,6 +202,9 @@ class LeModeCoService {
   }
 
   static async confirmPayment(paymentIntentId) {
+    if (!stripe) {
+      throw new Error('Stripe is not configured on this server');
+    }
     try {
       // Get payment intent from Stripe
       const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
