@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const ClientService = require('../services/clientService');
+const AuthService = require('../services/authService');
 
 // Create new client
-router.post('/', async (req, res) => {
+router.post('/', AuthService.requireAuth, async (req, res) => {
   try {
     const { email, firstName, lastName, phone, company, address, city, province, postalCode } = req.body;
 
@@ -40,7 +41,7 @@ router.post('/', async (req, res) => {
 });
 
 // Get client by email
-router.get('/email/:email', async (req, res) => {
+router.get('/email/:email', AuthService.requireAuth, async (req, res) => {
   try {
     const { email } = req.params;
 
@@ -64,7 +65,7 @@ router.get('/email/:email', async (req, res) => {
 });
 
 // Get client by ID
-router.get('/:clientId', async (req, res) => {
+router.get('/:clientId', AuthService.requireAuth, async (req, res) => {
   try {
     const { clientId } = req.params;
 
@@ -88,7 +89,7 @@ router.get('/:clientId', async (req, res) => {
 });
 
 // Update client
-router.patch('/:clientId', async (req, res) => {
+router.patch('/:clientId', AuthService.requireAuth, async (req, res) => {
   try {
     const { clientId } = req.params;
     const updateData = req.body;
@@ -110,7 +111,7 @@ router.patch('/:clientId', async (req, res) => {
 });
 
 // Get all clients (admin)
-router.get('/', async (req, res) => {
+router.get('/', AuthService.requireAuth, async (req, res) => {
   try {
     const { page = 1, limit = 10, search = '' } = req.query;
 
@@ -134,7 +135,7 @@ router.get('/', async (req, res) => {
 });
 
 // Find or create client
-router.post('/find-or-create', async (req, res) => {
+router.post('/find-or-create', AuthService.requireAuth, async (req, res) => {
   try {
     const { email, firstName, lastName, phone, company } = req.body;
 
@@ -167,7 +168,7 @@ router.post('/find-or-create', async (req, res) => {
 });
 
 // Delete client
-router.delete('/:clientId', async (req, res) => {
+router.delete('/:clientId', AuthService.requireAuth, async (req, res) => {
   try {
     const { clientId } = req.params;
 
@@ -187,7 +188,7 @@ router.delete('/:clientId', async (req, res) => {
 });
 
 // Get client dashboard
-router.get('/:clientId/dashboard', async (req, res) => {
+router.get('/:clientId/dashboard', AuthService.requireAuth, async (req, res) => {
   try {
     const { clientId } = req.params;
 

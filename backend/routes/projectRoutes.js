@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const ProjectService = require('../services/projectService');
+const AuthService = require('../services/authService');
 
 // Create new project
-router.post('/', async (req, res) => {
+router.post('/', AuthService.requireAuth, async (req, res) => {
   try {
     const projectData = req.body;
 
@@ -30,7 +31,7 @@ router.post('/', async (req, res) => {
 });
 
 // Get project by ID
-router.get('/:projectId', async (req, res) => {
+router.get('/:projectId', AuthService.requireAuth, async (req, res) => {
   try {
     const { projectId } = req.params;
 
@@ -54,7 +55,7 @@ router.get('/:projectId', async (req, res) => {
 });
 
 // Update project
-router.patch('/:projectId', async (req, res) => {
+router.patch('/:projectId', AuthService.requireAuth, async (req, res) => {
   try {
     const { projectId } = req.params;
     const updateData = req.body;
@@ -76,7 +77,7 @@ router.patch('/:projectId', async (req, res) => {
 });
 
 // Update project status
-router.patch('/:projectId/status', async (req, res) => {
+router.patch('/:projectId/status', AuthService.requireAuth, async (req, res) => {
   try {
     const { projectId } = req.params;
     const { status } = req.body;
@@ -110,7 +111,7 @@ router.patch('/:projectId/status', async (req, res) => {
 });
 
 // Get all projects (admin)
-router.get('/', async (req, res) => {
+router.get('/', AuthService.requireAuth, async (req, res) => {
   try {
     const { page = 1, limit = 10, status, serviceType, clientId } = req.query;
 
@@ -139,7 +140,7 @@ router.get('/', async (req, res) => {
 });
 
 // Get client projects
-router.get('/client/:clientId', async (req, res) => {
+router.get('/client/:clientId', AuthService.requireAuth, async (req, res) => {
   try {
     const { clientId } = req.params;
 
@@ -159,7 +160,7 @@ router.get('/client/:clientId', async (req, res) => {
 });
 
 // Delete project
-router.delete('/:projectId', async (req, res) => {
+router.delete('/:projectId', AuthService.requireAuth, async (req, res) => {
   try {
     const { projectId } = req.params;
 
@@ -179,7 +180,7 @@ router.delete('/:projectId', async (req, res) => {
 });
 
 // Add task to project
-router.post('/:projectId/tasks', async (req, res) => {
+router.post('/:projectId/tasks', AuthService.requireAuth, async (req, res) => {
   try {
     const { projectId } = req.params;
     const taskData = req.body;
@@ -205,7 +206,7 @@ router.post('/:projectId/tasks', async (req, res) => {
 });
 
 // Update task
-router.patch('/tasks/:taskId', async (req, res) => {
+router.patch('/tasks/:taskId', AuthService.requireAuth, async (req, res) => {
   try {
     const { taskId } = req.params;
     const updateData = req.body;

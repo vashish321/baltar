@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const AuthService = require('../services/authService');
 
+// POST /api/auth/create-admin — protected so only an existing admin can create another
+
 // Login admin
 router.post('/login', async (req, res) => {
   try {
@@ -43,8 +45,8 @@ router.get('/verify', async (req, res) => {
   }
 });
 
-// Create admin (for initial setup only)
-router.post('/create-admin', async (req, res) => {
+// Create admin — requires an existing authenticated admin
+router.post('/create-admin', AuthService.requireAuth, async (req, res) => {
   try {
     const { email, password, firstName, lastName } = req.body;
 

@@ -1,10 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { PrismaClient } = require('@prisma/client');
+const prisma = require('../lib/prisma');
 const ClientService = require('../services/clientService');
 const ProjectService = require('../services/projectService');
-
-const prisma = new PrismaClient();
+const AuthService = require('../services/authService');
 
 // Create new booking (from contact forms)
 router.post('/', async (req, res) => {
@@ -113,7 +112,7 @@ router.post('/', async (req, res) => {
 });
 
 // Get all bookings (admin)
-router.get('/', async (req, res) => {
+router.get('/', AuthService.requireAuth, async (req, res) => {
   try {
     const { page = 1, limit = 10, serviceType, status } = req.query;
     const skip = (page - 1) * limit;
@@ -163,7 +162,7 @@ router.get('/', async (req, res) => {
 });
 
 // Get booking by ID
-router.get('/:bookingId', async (req, res) => {
+router.get('/:bookingId', AuthService.requireAuth, async (req, res) => {
   try {
     const { bookingId } = req.params;
 
@@ -193,7 +192,7 @@ router.get('/:bookingId', async (req, res) => {
 });
 
 // Update booking status
-router.patch('/:bookingId/status', async (req, res) => {
+router.patch('/:bookingId/status', AuthService.requireAuth, async (req, res) => {
   try {
     const { bookingId } = req.params;
     const { status } = req.body;
@@ -229,7 +228,7 @@ router.patch('/:bookingId/status', async (req, res) => {
 });
 
 // Delete booking
-router.delete('/:bookingId', async (req, res) => {
+router.delete('/:bookingId', AuthService.requireAuth, async (req, res) => {
   try {
     const { bookingId } = req.params;
 
@@ -252,7 +251,7 @@ router.delete('/:bookingId', async (req, res) => {
 });
 
 // Get client bookings
-router.get('/client/:clientId', async (req, res) => {
+router.get('/client/:clientId', AuthService.requireAuth, async (req, res) => {
   try {
     const { clientId } = req.params;
 

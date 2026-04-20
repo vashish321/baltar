@@ -13,6 +13,7 @@ if (!process.env.STRIPE_SECRET_KEY) {
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const LeModeCoService = require('../services/leModeCoService');
+const prisma = require('../lib/prisma');
 
 // Stripe webhook endpoint — must receive raw body (set in server.js before express.json)
 router.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
@@ -41,26 +42,20 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
       case 'payment_intent.payment_failed': {
         const failedPayment = event.data.object;
         console.log('Payment failed:', failedPayment.id);
-        const { PrismaClient } = require('@prisma/client');
-        const prisma = new PrismaClient();
         await prisma.customerSubscription.updateMany({
           where: { stripePaymentId: failedPayment.id },
           data: { status: 'FAILED' },
         });
-        await prisma.$disconnect();
         break;
       }
 
       case 'payment_intent.canceled': {
         const canceledPayment = event.data.object;
         console.log('Payment canceled:', canceledPayment.id);
-        const { PrismaClient } = require('@prisma/client');
-        const prisma = new PrismaClient();
         await prisma.customerSubscription.updateMany({
           where: { stripePaymentId: canceledPayment.id },
           data: { status: 'CANCELLED' },
         });
-        await prisma.$disconnect();
         break;
       }
 

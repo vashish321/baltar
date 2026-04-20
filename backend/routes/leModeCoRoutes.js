@@ -5,6 +5,7 @@ const OrderManagementService = require('../services/orderManagementService');
 const TemplateService = require('../services/templateService');
 const AuthService = require('../services/authService');
 const EmailService = require('../services/emailService');
+const prisma = require('../lib/prisma');
 
 // Public Routes (for customers)
 
@@ -30,8 +31,6 @@ router.get('/packages', async (req, res) => {
 router.get('/lookbook/products', async (req, res) => {
   try {
     const { category } = req.query;
-    const { PrismaClient } = require('@prisma/client');
-    const prisma = new PrismaClient();
 
     const where = {
       isActive: true
@@ -76,7 +75,6 @@ router.get('/lookbook/products', async (req, res) => {
       }
     });
 
-    await prisma.$disconnect();
 
     res.json({
       success: true,
@@ -94,8 +92,6 @@ router.get('/lookbook/products', async (req, res) => {
 // Get available categories for lookbook (public endpoint)
 router.get('/lookbook/categories', async (req, res) => {
   try {
-    const { PrismaClient } = require('@prisma/client');
-    const prisma = new PrismaClient();
 
     const categories = await prisma.category.findMany({
       where: {
@@ -111,7 +107,6 @@ router.get('/lookbook/categories', async (req, res) => {
       }
     });
 
-    await prisma.$disconnect();
 
     res.json({
       success: true,
@@ -139,8 +134,6 @@ router.post('/subscribe', async (req, res) => {
     }
 
     // Check if customer already has an active subscription
-    const { PrismaClient } = require('@prisma/client');
-    const prisma = new PrismaClient();
     
     const existingSubscription = await prisma.customerSubscription.findFirst({
       where: {
@@ -367,8 +360,6 @@ router.put('/admin/subscriptions/:subscriptionId/status', AuthService.requireAut
       });
     }
 
-    const { PrismaClient } = require('@prisma/client');
-    const prisma = new PrismaClient();
 
     const updatedSubscription = await prisma.customerSubscription.update({
       where: { id: subscriptionId },
@@ -383,7 +374,6 @@ router.put('/admin/subscriptions/:subscriptionId/status', AuthService.requireAut
       }
     });
 
-    await prisma.$disconnect();
 
     res.json({
       success: true,
@@ -452,8 +442,6 @@ router.delete('/admin/orders/:orderId/items/:itemId', AuthService.requireAuth, a
   try {
     const { orderId, itemId } = req.params;
 
-    const { PrismaClient } = require('@prisma/client');
-    const prisma = new PrismaClient();
 
     await prisma.orderItem.delete({
       where: {
@@ -462,7 +450,6 @@ router.delete('/admin/orders/:orderId/items/:itemId', AuthService.requireAuth, a
       }
     });
 
-    await prisma.$disconnect();
 
     res.json({
       success: true,
@@ -489,8 +476,6 @@ router.post('/admin/orders/:orderId/apply-template', AuthService.requireAuth, as
       });
     }
 
-    const { PrismaClient } = require('@prisma/client');
-    const prisma = new PrismaClient();
 
     // Get template with items
     const template = await prisma.orderTemplate.findUnique({
@@ -526,7 +511,6 @@ router.post('/admin/orders/:orderId/apply-template', AuthService.requireAuth, as
       }
     }
 
-    await prisma.$disconnect();
 
     res.json({
       success: true,
@@ -632,7 +616,7 @@ router.put('/admin/orders/:orderId/status', AuthService.requireAuth, async (req,
   try {
     const { orderId } = req.params;
     const { status, notes, trackingNumber } = req.body;
-    const adminId = req.user?.id; // Assuming user info is available from auth middleware
+    const adminId = req.admin?.id; // Assuming user info is available from auth middleware
 
     const order = await OrderManagementService.updateOrderStatus(
       orderId,
@@ -745,7 +729,7 @@ router.post('/admin/orders/:orderId/notify-enhanced', AuthService.requireAuth, a
   try {
     const { orderId } = req.params;
     const { customMessage } = req.body;
-    const adminId = req.user?.id;
+    const adminId = req.admin?.id;
 
     const emailResult = await OrderManagementService.sendManualNotification(
       orderId,
@@ -830,7 +814,7 @@ router.get('/admin/templates/:templateId', AuthService.requireAuth, async (req, 
 router.post('/admin/templates', AuthService.requireAuth, async (req, res) => {
   try {
     const templateData = req.body;
-    const adminId = req.user?.id;
+    const adminId = req.admin?.id;
 
     const template = await TemplateService.createTemplate(templateData, adminId);
 
@@ -954,7 +938,7 @@ router.post('/admin/orders/:orderId/create-template', AuthService.requireAuth, a
   try {
     const { orderId } = req.params;
     const templateData = req.body;
-    const adminId = req.user?.id;
+    const adminId = req.admin?.id;
 
     const template = await TemplateService.createTemplateFromOrder(orderId, templateData, adminId);
 
@@ -977,7 +961,7 @@ router.post('/admin/templates/:templateId/duplicate', AuthService.requireAuth, a
   try {
     const { templateId } = req.params;
     const { newName } = req.body;
-    const adminId = req.user?.id;
+    const adminId = req.admin?.id;
 
     const template = await TemplateService.duplicateTemplate(templateId, newName, adminId);
 
@@ -1018,8 +1002,6 @@ router.get('/admin/templates/meta/stats', AuthService.requireAuth, async (req, r
 // Get all categories
 router.get('/admin/categories', AuthService.requireAuth, async (req, res) => {
   try {
-    const { PrismaClient } = require('@prisma/client');
-    const prisma = new PrismaClient();
 
     const categories = await prisma.category.findMany({
       orderBy: {
@@ -1027,7 +1009,6 @@ router.get('/admin/categories', AuthService.requireAuth, async (req, res) => {
       }
     });
 
-    await prisma.$disconnect();
 
     res.json({
       success: true,
@@ -1053,8 +1034,6 @@ router.post('/admin/categories', AuthService.requireAuth, async (req, res) => {
       });
     }
 
-    const { PrismaClient } = require('@prisma/client');
-    const prisma = new PrismaClient();
 
     const category = await prisma.category.create({
       data: {
@@ -1064,7 +1043,6 @@ router.post('/admin/categories', AuthService.requireAuth, async (req, res) => {
       }
     });
 
-    await prisma.$disconnect();
 
     res.json({
       success: true,
@@ -1085,8 +1063,6 @@ router.put('/admin/categories/:id', AuthService.requireAuth, async (req, res) =>
     const { id } = req.params;
     const { name, description, displayOrder, isActive } = req.body;
 
-    const { PrismaClient } = require('@prisma/client');
-    const prisma = new PrismaClient();
 
     const updateData = {};
     if (name !== undefined) updateData.name = name.toUpperCase();
@@ -1099,7 +1075,6 @@ router.put('/admin/categories/:id', AuthService.requireAuth, async (req, res) =>
       data: updateData
     });
 
-    await prisma.$disconnect();
 
     res.json({
       success: true,
@@ -1119,8 +1094,6 @@ router.delete('/admin/categories/:id', AuthService.requireAuth, async (req, res)
   try {
     const { id } = req.params;
 
-    const { PrismaClient } = require('@prisma/client');
-    const prisma = new PrismaClient();
 
     // Check if category has products
     const productsCount = await prisma.product.count({
@@ -1128,7 +1101,6 @@ router.delete('/admin/categories/:id', AuthService.requireAuth, async (req, res)
     });
 
     if (productsCount > 0) {
-      await prisma.$disconnect();
       return res.status(400).json({
         error: 'Cannot delete category with existing products',
         details: `This category has ${productsCount} products. Please reassign or delete the products first.`
@@ -1139,7 +1111,6 @@ router.delete('/admin/categories/:id', AuthService.requireAuth, async (req, res)
       where: { id }
     });
 
-    await prisma.$disconnect();
 
     res.json({
       success: true,
