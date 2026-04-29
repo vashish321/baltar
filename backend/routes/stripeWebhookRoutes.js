@@ -15,15 +15,13 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const LeModeCoService = require('../services/leModeCoService');
 const prisma = require('../lib/prisma');
 
-// Stripe webhook endpoint — must receive raw body (set in server.js before express.json)
+// Stripe webhook — must receive raw body (mounted before express.json in server.js)
 router.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
   const sig = req.headers['stripe-signature'];
-  const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
-
   let event;
 
   try {
-    event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+    event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
   } catch (err) {
     console.error('Webhook signature verification failed:', err.message);
     return res.status(400).send(`Webhook Error: ${err.message}`);
@@ -32,37 +30,32 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
   try {
     switch (event.type) {
       case 'payment_intent.succeeded': {
-        const paymentIntent = event.data.object;
-        console.log('Payment succeeded:', paymentIntent.id);
-        await LeModeCoService.confirmPayment(paymentIntent.id);
-        console.log('Subscription activated for payment:', paymentIntent.id);
+        const pi = event.data.object;
+        console.log('Payment succeeded:', pi.id);
+        await LeModeCoService.confirmPayment(pi.id);
         break;
       }
-
       case 'payment_intent.payment_failed': {
-        const failedPayment = event.data.object;
-        console.log('Payment failed:', failedPayment.id);
+        const pi = event.data.object;
+        console.log('Payment failed:', pi.id);
         await prisma.customerSubscription.updateMany({
-          where: { stripePaymentId: failedPayment.id },
+          where: { stripePaymentId: pi.id },
           data: { status: 'FAILED' },
         });
         break;
       }
-
       case 'payment_intent.canceled': {
-        const canceledPayment = event.data.object;
-        console.log('Payment canceled:', canceledPayment.id);
+        const pi = event.data.object;
+        console.log('Payment canceled:', pi.id);
         await prisma.customerSubscription.updateMany({
-          where: { stripePaymentId: canceledPayment.id },
+          where: { stripePaymentId: pi.id },
           data: { status: 'CANCELLED' },
         });
         break;
       }
-
       default:
         console.log(`Unhandled Stripe event type: ${event.type}`);
     }
-
     res.json({ received: true });
   } catch (error) {
     console.error('Error handling Stripe webhook:', error.message);

@@ -2,27 +2,20 @@ const express = require('express');
 const router = express.Router();
 const AuthService = require('../services/authService');
 
-// POST /api/auth/create-admin — protected so only an existing admin can create another
-
 // Login admin
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(400).json({ 
-        error: 'Email and password are required' 
-      });
+      return res.status(400).json({ error: 'Email and password are required' });
     }
 
     const result = await AuthService.loginAdmin(email, password);
-
     res.json(result);
   } catch (error) {
-    console.error('Login error:', error);
-    res.status(401).json({ 
-      error: error.message || 'Login failed' 
-    });
+    console.error('Login error:', error.message);
+    res.status(401).json({ error: 'Invalid credentials' });
   }
 });
 
@@ -33,15 +26,11 @@ router.get('/verify', async (req, res) => {
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return res.status(401).json({ error: 'No token provided' });
     }
-
     const token = authHeader.substring(7);
     const result = await AuthService.verifyToken(token);
-
     res.json(result);
   } catch (error) {
-    res.status(401).json({ 
-      error: error.message || 'Token verification failed' 
-    });
+    res.status(401).json({ error: 'Token verification failed' });
   }
 });
 
@@ -51,19 +40,14 @@ router.post('/create-admin', AuthService.requireAuth, async (req, res) => {
     const { email, password, firstName, lastName } = req.body;
 
     if (!email || !password || !firstName || !lastName) {
-      return res.status(400).json({ 
-        error: 'All fields are required' 
-      });
+      return res.status(400).json({ error: 'All fields are required' });
     }
 
     const result = await AuthService.createAdmin(email, password, firstName, lastName);
-
     res.status(201).json(result);
   } catch (error) {
-    console.error('Create admin error:', error);
-    res.status(500).json({ 
-      error: error.message || 'Failed to create admin' 
-    });
+    console.error('Create admin error:', error.message);
+    res.status(500).json({ error: error.message || 'Failed to create admin' });
   }
 });
 

@@ -75,7 +75,6 @@ router.get('/lookbook/products', async (req, res) => {
       }
     });
 
-
     res.json({
       success: true,
       products
@@ -92,7 +91,6 @@ router.get('/lookbook/products', async (req, res) => {
 // Get available categories for lookbook (public endpoint)
 router.get('/lookbook/categories', async (req, res) => {
   try {
-
     const categories = await prisma.category.findMany({
       where: {
         isActive: true
@@ -106,7 +104,6 @@ router.get('/lookbook/categories', async (req, res) => {
         displayOrder: 'asc'
       }
     });
-
 
     res.json({
       success: true,
@@ -126,15 +123,12 @@ router.post('/subscribe', async (req, res) => {
   try {
     const { email, fullName, phone, zipCode, address, packageId } = req.body;
 
-    // Validate required fields
     if (!email || !fullName || !phone || !zipCode || !address || !packageId) {
       return res.status(400).json({
         error: 'All fields are required'
       });
     }
 
-    // Check if customer already has an active subscription
-    
     const existingSubscription = await prisma.customerSubscription.findFirst({
       where: {
         email,
@@ -230,7 +224,7 @@ router.post('/confirm-payment', async (req, res) => {
 router.get('/admin/packages', AuthService.requireAuth, async (req, res) => {
   try {
     const packages = await LeModeCoService.getAllPackages(true);
-    
+
     res.json({
       success: true,
       packages
@@ -269,7 +263,7 @@ router.put('/admin/packages/:packageId', AuthService.requireAuth, async (req, re
   try {
     const { packageId } = req.params;
     const updateData = req.body;
-    
+
     const subscriptionPackage = await LeModeCoService.updatePackage(packageId, updateData);
 
     res.json({
@@ -290,9 +284,9 @@ router.put('/admin/packages/:packageId', AuthService.requireAuth, async (req, re
 router.delete('/admin/packages/:packageId', AuthService.requireAuth, async (req, res) => {
   try {
     const { packageId } = req.params;
-    
+
     const result = await LeModeCoService.deletePackage(packageId);
-    
+
     res.json({
       success: true,
       ...result
@@ -311,7 +305,7 @@ router.get('/admin/subscriptions', AuthService.requireAuth, async (req, res) => 
   try {
     const filters = req.query;
     const result = await LeModeCoService.getAllSubscriptions(filters);
-    
+
     res.json({
       success: true,
       ...result
@@ -351,7 +345,6 @@ router.put('/admin/subscriptions/:subscriptionId/status', AuthService.requireAut
     const { subscriptionId } = req.params;
     const { status } = req.body;
 
-    // Validate status
     const validStatuses = ['PENDING', 'PAID', 'FAILED', 'COMPLIMENTARY', 'CANCELLED'];
     if (!validStatuses.includes(status)) {
       return res.status(400).json({
@@ -359,7 +352,6 @@ router.put('/admin/subscriptions/:subscriptionId/status', AuthService.requireAut
         validStatuses
       });
     }
-
 
     const updatedSubscription = await prisma.customerSubscription.update({
       where: { id: subscriptionId },
@@ -373,7 +365,6 @@ router.put('/admin/subscriptions/:subscriptionId/status', AuthService.requireAut
         }
       }
     });
-
 
     res.json({
       success: true,
@@ -437,11 +428,10 @@ router.post('/admin/orders/:orderId/items', AuthService.requireAuth, async (req,
   }
 });
 
-// Remove item from order
+// Remove item from order (by orderId + itemId)
 router.delete('/admin/orders/:orderId/items/:itemId', AuthService.requireAuth, async (req, res) => {
   try {
     const { orderId, itemId } = req.params;
-
 
     await prisma.orderItem.delete({
       where: {
@@ -449,7 +439,6 @@ router.delete('/admin/orders/:orderId/items/:itemId', AuthService.requireAuth, a
         orderId: orderId
       }
     });
-
 
     res.json({
       success: true,
@@ -464,7 +453,7 @@ router.delete('/admin/orders/:orderId/items/:itemId', AuthService.requireAuth, a
   }
 });
 
-// Apply template to order
+// Apply template to order (inline version)
 router.post('/admin/orders/:orderId/apply-template', AuthService.requireAuth, async (req, res) => {
   try {
     const { orderId } = req.params;
@@ -476,8 +465,6 @@ router.post('/admin/orders/:orderId/apply-template', AuthService.requireAuth, as
       });
     }
 
-
-    // Get template with items
     const template = await prisma.orderTemplate.findUnique({
       where: { id: templateId },
       include: { items: true }
@@ -489,9 +476,7 @@ router.post('/admin/orders/:orderId/apply-template', AuthService.requireAuth, as
       });
     }
 
-    // Add template items to order
     for (const templateItem of template.items) {
-      // Get product details for the template item
       const product = await prisma.product.findUnique({
         where: { id: templateItem.productId },
         include: { category: true }
@@ -511,7 +496,6 @@ router.post('/admin/orders/:orderId/apply-template', AuthService.requireAuth, as
       }
     }
 
-
     res.json({
       success: true,
       message: `Applied template "${template.name}" to order`,
@@ -526,13 +510,13 @@ router.post('/admin/orders/:orderId/apply-template', AuthService.requireAuth, as
   }
 });
 
-// Remove item from order
+// Remove item from order (by itemId only)
 router.delete('/admin/orders/items/:itemId', AuthService.requireAuth, async (req, res) => {
   try {
     const { itemId } = req.params;
-    
+
     const result = await LeModeCoService.removeItemFromOrder(itemId);
-    
+
     res.json({
       success: true,
       ...result
@@ -550,9 +534,9 @@ router.delete('/admin/orders/items/:itemId', AuthService.requireAuth, async (req
 router.put('/admin/orders/:orderId/complete', AuthService.requireAuth, async (req, res) => {
   try {
     const { orderId } = req.params;
-    
+
     const order = await LeModeCoService.completeOrder(orderId);
-    
+
     res.json({
       success: true,
       message: 'Order completed successfully',
@@ -571,12 +555,11 @@ router.put('/admin/orders/:orderId/complete', AuthService.requireAuth, async (re
 router.post('/admin/orders/:orderId/notify', AuthService.requireAuth, async (req, res) => {
   try {
     const { orderId } = req.params;
-    
+
     const notificationData = await LeModeCoService.notifyCustomer(orderId);
-    
-    // Send email notification
+
     const emailResult = await EmailService.sendLeModeCoOrderNotification(notificationData.emailData);
-    
+
     res.json({
       success: true,
       message: 'Customer notified successfully',
@@ -616,7 +599,7 @@ router.put('/admin/orders/:orderId/status', AuthService.requireAuth, async (req,
   try {
     const { orderId } = req.params;
     const { status, notes, trackingNumber } = req.body;
-    const adminId = req.admin?.id; // Assuming user info is available from auth middleware
+    const adminId = req.admin?.id;
 
     const order = await OrderManagementService.updateOrderStatus(
       orderId,
@@ -874,8 +857,8 @@ router.delete('/admin/templates/:templateId', AuthService.requireAuth, async (re
   }
 });
 
-// Apply template to order
-router.post('/admin/orders/:orderId/apply-template', AuthService.requireAuth, async (req, res) => {
+// Apply template to order (TemplateService version)
+router.post('/admin/orders/:orderId/apply-template-service', AuthService.requireAuth, async (req, res) => {
   try {
     const { orderId } = req.params;
     const { templateId } = req.body;
@@ -1002,13 +985,11 @@ router.get('/admin/templates/meta/stats', AuthService.requireAuth, async (req, r
 // Get all categories
 router.get('/admin/categories', AuthService.requireAuth, async (req, res) => {
   try {
-
     const categories = await prisma.category.findMany({
       orderBy: {
         displayOrder: 'asc'
       }
     });
-
 
     res.json({
       success: true,
@@ -1034,7 +1015,6 @@ router.post('/admin/categories', AuthService.requireAuth, async (req, res) => {
       });
     }
 
-
     const category = await prisma.category.create({
       data: {
         name: name.toUpperCase(),
@@ -1042,7 +1022,6 @@ router.post('/admin/categories', AuthService.requireAuth, async (req, res) => {
         displayOrder: displayOrder || 0
       }
     });
-
 
     res.json({
       success: true,
@@ -1063,7 +1042,6 @@ router.put('/admin/categories/:id', AuthService.requireAuth, async (req, res) =>
     const { id } = req.params;
     const { name, description, displayOrder, isActive } = req.body;
 
-
     const updateData = {};
     if (name !== undefined) updateData.name = name.toUpperCase();
     if (description !== undefined) updateData.description = description;
@@ -1074,7 +1052,6 @@ router.put('/admin/categories/:id', AuthService.requireAuth, async (req, res) =>
       where: { id },
       data: updateData
     });
-
 
     res.json({
       success: true,
@@ -1094,7 +1071,6 @@ router.delete('/admin/categories/:id', AuthService.requireAuth, async (req, res)
   try {
     const { id } = req.params;
 
-
     // Check if category has products
     const productsCount = await prisma.product.count({
       where: { categoryId: id }
@@ -1110,7 +1086,6 @@ router.delete('/admin/categories/:id', AuthService.requireAuth, async (req, res)
     await prisma.category.delete({
       where: { id }
     });
-
 
     res.json({
       success: true,
