@@ -4,153 +4,145 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import styles from './ContactUs.module.css';
 
+const DIVISIONS = [
+  { value: '', label: 'Select a division (optional)' },
+  { value: 'Toronto Media Inc. — Web Design & Development', label: 'Toronto Media Inc. — Web Design' },
+  { value: 'Frontend Media Inc. — Development', label: 'Frontend Media Inc. — Development' },
+  { value: 'Transac — Payments', label: 'Transac — Payments' },
+  { value: 'Savour & Sip — Hospitality & Events', label: 'Savour & Sip — Events & Catering' },
+  { value: 'VR — Eyewear & Fashion Tech', label: 'VR — Eyewear & Fashion' },
+  { value: 'Baltar Consulting — Engineering', label: 'Baltar Consulting — Structural Engineering' },
+  { value: 'Baltar International — Advisory', label: 'Baltar International — Global Advisory' },
+  { value: 'General Enquiry', label: 'General Enquiry' },
+];
+
 export default function ContactUsPage() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    phone: '',
-    description: ''
+    division: '',
+    message: '',
   });
-
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [sent, setSent] = useState(false);
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // For now, just show success message
-    setIsSubmitted(true);
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setFormData({ name: '', email: '', phone: '', description: '' });
-    }, 3000);
-  };
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut"
-      }
-    }
+    const { name, email, division, message } = formData;
+    const subject = division
+      ? `Enquiry — ${division} [via baltar.ca]`
+      : `Enquiry from ${name} [via baltar.ca]`;
+    const body = `Name: ${name}\nEmail: ${email}\nDivision: ${division || 'Not specified'}\n\n${message}`;
+    window.location.href = `mailto:admin@baltar.ca?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    setSent(true);
+    setTimeout(() => setSent(false), 5000);
   };
 
   return (
     <div className={styles.container}>
       <motion.div
         className={styles.content}
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       >
-        <motion.div className={styles.header} variants={itemVariants}>
-          <h1 className={styles.title}>Contact Baltar Inc.</h1>
+        <div className={styles.header}>
+          <span className={styles.eyebrow}>Baltar Inc. — Toronto, ON</span>
+          <h1 className={styles.title}>Let's Talk</h1>
           <p className={styles.subtitle}>
-            Ready to transform your business? Get in touch with our team.
+            Tell us what you're working on. We'll figure out the best way to help.
           </p>
-        </motion.div>
+        </div>
 
-        <motion.div className={styles.formContainer} variants={itemVariants}>
-          {isSubmitted ? (
+        <div className={styles.formContainer}>
+          {sent ? (
             <motion.div
               className={styles.successMessage}
-              initial={{ scale: 0.8, opacity: 0 }}
+              initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.4 }}
             >
-              <h3>Thank you for your message!</h3>
-              <p>We'll get back to you within 24 hours.</p>
+              <h3>Message prepared.</h3>
+              <p>Your email client should have opened with the message pre-filled. If it didn't, email us directly at <a href="mailto:admin@baltar.ca">admin@baltar.ca</a>.</p>
             </motion.div>
           ) : (
             <form className={styles.form} onSubmit={handleSubmit}>
-              <div className={styles.formGroup}>
-                <label htmlFor="name" className={styles.label}>Full Name *</label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className={styles.input}
-                  required
-                />
+              <div className={styles.formRow}>
+                <div className={styles.formGroup}>
+                  <label htmlFor="name" className={styles.label}>Name</label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className={styles.input}
+                    placeholder="Your name"
+                    required
+                  />
+                </div>
+                <div className={styles.formGroup}>
+                  <label htmlFor="email" className={styles.label}>Email</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className={styles.input}
+                    placeholder="you@company.com"
+                    required
+                  />
+                </div>
               </div>
 
               <div className={styles.formGroup}>
-                <label htmlFor="email" className={styles.label}>Email Address *</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
+                <label htmlFor="division" className={styles.label}>Division</label>
+                <select
+                  id="division"
+                  name="division"
+                  value={formData.division}
                   onChange={handleChange}
-                  className={styles.input}
-                  required
-                />
+                  className={styles.select}
+                >
+                  {DIVISIONS.map((d) => (
+                    <option key={d.value} value={d.value}>{d.label}</option>
+                  ))}
+                </select>
               </div>
 
               <div className={styles.formGroup}>
-                <label htmlFor="phone" className={styles.label}>Phone Number</label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className={styles.input}
-                />
-              </div>
-
-              <div className={styles.formGroup}>
-                <label htmlFor="description" className={styles.label}>Message *</label>
+                <label htmlFor="message" className={styles.label}>Message</label>
                 <textarea
-                  id="description"
-                  name="description"
-                  value={formData.description}
+                  id="message"
+                  name="message"
+                  value={formData.message}
                   onChange={handleChange}
                   className={styles.textarea}
-                  rows="5"
-                  placeholder="Tell us about your project or how we can help..."
+                  rows="6"
+                  placeholder="Tell us what you need..."
                   required
                 />
               </div>
 
-              <motion.button
-                type="submit"
-                className={styles.submitButton}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
+              <button type="submit" className={styles.submitButton}>
                 Send Message
-              </motion.button>
+              </button>
             </form>
           )}
-        </motion.div>
+        </div>
 
-        <motion.div className={styles.backLink} variants={itemVariants}>
-          <Link href="/" className={styles.backButton}>
-            ← Back to Home
-          </Link>
-        </motion.div>
+        <div className={styles.directContact}>
+          <span>Prefer direct email?</span>
+          <a href="mailto:admin@baltar.ca" className={styles.directEmail}>admin@baltar.ca</a>
+        </div>
+
+        <div className={styles.backLink}>
+          <Link href="/" className={styles.backButton}>← Back to Home</Link>
+        </div>
       </motion.div>
     </div>
   );

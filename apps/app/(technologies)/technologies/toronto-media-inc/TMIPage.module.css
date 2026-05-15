@@ -404,6 +404,22 @@
   }
 }
 
+@media (max-width: 768px) {
+  .heroInner {
+    padding: 110px 32px 72px;
+  }
+  .servicesSection,
+  .ctaSection {
+    padding: 72px 32px;
+  }
+  .workSection {
+    padding: 0 32px 72px;
+  }
+  .footer {
+    padding: 40px 32px;
+  }
+}
+
 @media (max-width: 600px) {
   .heroInner {
     padding: 100px 24px 64px;

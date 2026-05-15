@@ -5,24 +5,22 @@ import styles from './MetaFooter.module.css';
 
 const footerSections = {
   'Technologies': [
-    { name: 'Toronto Media Inc.', href: '/technologies/toronto-media-inc', external: false },
-    { name: 'Transac', href: '/finance/transac', external: false },
-    { name: 'Consumer Pulse', href: '/media/consumer-pulse', external: false },
+    { name: 'Toronto Media Inc.', href: '/technologies/toronto-media-inc' },
+    { name: 'Frontend Media Inc.', href: '/technologies/frontend-media' },
+    { name: 'Transac', href: '/finance/transac' },
   ],
-  'Services': [
-    { name: 'Hospitality', href: '/hospitality/savour-and-sip', external: false },
-    { name: 'Engineering', href: '/consulting/baltar-engineering', external: false },
-    { name: 'Finance', href: '/baltar-finance-comingsoon', external: false },
+  'Consultancy': [
+    { name: 'Baltar Consulting', href: '/consulting/baltar-engineering' },
+    { name: 'Baltar International', href: '/consulting/baltar-international' },
   ],
   'Brands': [
-    { name: 'VR Fashion', href: '/fashion/vr', external: false },
-    { name: 'Le Mode Co.', href: '/fashion/le-mode-co', external: false },
-    { name: 'Savour & Sip', href: '/hospitality/savour-and-sip', external: false },
+    { name: 'Savour & Sip', href: '/hospitality/savour-and-sip' },
+    { name: 'VR', href: '/fashion/vr' },
   ],
   'Company': [
-    { name: 'About', href: '/about-comingsoon', external: false },
-    { name: 'Careers', href: '/careers-comingsoon', external: false },
-    { name: 'Contact', href: '/contact-us', external: false },
+    { name: 'Contact', href: '/contact-us' },
+    { name: 'Privacy Policy', href: '/privacy-policy' },
+    { name: 'Terms of Service', href: '/terms-of-service' },
   ],
 };
 
@@ -69,9 +67,12 @@ export default function MetaFooter() {
               <h3 className={styles.companyName}>Baltar Inc</h3>
               <p className={styles.companyTagline}>One Company. Limitless Services.</p>
               <p className={styles.companyDescription}>
-                A multi-division firm offering advanced solutions across construction, 
-                technology, hospitality, finance, fashion, and media.
+                A Canadian multi-division company operating across technology, hospitality, fashion, and consultancy — built to deliver at every level.
               </p>
+              <div className={styles.companyContact}>
+                <span>Toronto, ON</span>
+                <a href="mailto:admin@baltar.ca" className={styles.contactEmail}>admin@baltar.ca</a>
+              </div>
             </motion.div>
 
             {/* Footer Links */}
@@ -82,20 +83,9 @@ export default function MetaFooter() {
                   <ul className={styles.linkList}>
                     {links.map((link, index) => (
                       <li key={index}>
-                        {link.external ? (
-                          <a 
-                            href={link.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={styles.footerLink}
-                          >
-                            {link.name}
-                          </a>
-                        ) : (
-                          <Link href={link.href} className={styles.footerLink}>
-                            {link.name}
-                          </Link>
-                        )}
+                        <Link href={link.href} className={styles.footerLink}>
+                          {link.name}
+                        </Link>
                       </li>
                     ))}
                   </ul>
@@ -114,11 +104,10 @@ export default function MetaFooter() {
               <div className={styles.legalLinks}>
                 <Link href="/privacy-policy" className={styles.legalLink}>Privacy Policy</Link>
                 <Link href="/terms-of-service" className={styles.legalLink}>Terms of Service</Link>
-                <Link href="/cookies" className={styles.legalLink}>Cookies</Link>
               </div>
-              
+
               <div className={styles.location}>
-                <span>🇨🇦 Canada</span>
+                <span>Toronto, ON · Canada</span>
               </div>
             </div>
           </motion.div>

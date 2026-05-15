@@ -535,6 +535,14 @@
   .footer { padding: 48px 40px; }
 }
 
+@media (max-width: 768px) {
+  .heroContent { padding: 0 32px 64px; }
+  .servicesSection, .projectsSection { padding: 72px 32px; }
+  .approachSection { padding: 72px 32px; }
+  .servicesGrid { grid-template-columns: 1fr; }
+  .footer { padding: 48px 32px; }
+}
+
 @media (max-width: 600px) {
   .heroContent { padding: 0 24px 56px; }
   .heroStats { gap: 24px; }

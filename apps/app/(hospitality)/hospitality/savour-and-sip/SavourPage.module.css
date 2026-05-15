@@ -401,6 +401,14 @@
   .footer { padding: 48px 40px; }
 }
 
+@media (max-width: 768px) {
+  .heroContent { padding: 0 32px 60px; }
+  .philosophyContent { padding: 56px 32px; }
+  .servicesSection, .gallerySection { padding: 72px 32px; }
+  .ctaSection .ctaContent { padding: 0 32px 60px; }
+  .footer { padding: 48px 32px; }
+}
+
 @media (max-width: 600px) {
   .heroContent { padding: 0 24px 56px; }
   .servicesSection, .gallerySection { padding: 64px 24px; }

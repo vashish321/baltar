@@ -455,6 +455,15 @@
   .footer { padding: 48px 40px; }
 }
 
+@media (max-width: 768px) {
+  .heroCaption { left: 28px; bottom: 36px; }
+  .introRight { padding: 64px 32px; }
+  .featureContent { padding: 64px 32px; }
+  .collectionsSection { padding: 72px 20px; }
+  .statementSection { padding: 88px 32px; }
+  .footer { padding: 48px 32px; }
+}
+
 @media (max-width: 600px) {
   .heroCaption { left: 24px; bottom: 32px; }
   .collectionsGrid { grid-template-columns: 1fr; }

@@ -11,22 +11,22 @@ const services = [
   {
     num: '01',
     title: 'React & Next.js Development',
-    desc: 'Lightning-fast, SEO-ready web apps built with the modern React ecosystem — server components, streaming, and edge rendering.',
+    desc: 'Production-grade React and Next.js applications — server components, streaming, App Router, and edge-rendered pages built for real scale.',
   },
   {
     num: '02',
     title: 'UI/UX Engineering',
-    desc: 'Pixel-perfect interfaces with smooth animations, accessibility-first markup, and design systems that scale.',
+    desc: 'Clean interfaces, motion, and design systems that hold up across screen sizes and use cases. Accessibility-first by default.',
   },
   {
     num: '03',
     title: 'API Integration & Full-Stack',
-    desc: 'Connect your frontend to any backend — REST, GraphQL, Supabase, or custom APIs — with clean, typed integrations.',
+    desc: 'Connect your frontend to anything — REST, GraphQL, Supabase, Prisma, or a custom backend. Typed, documented, and built to last.',
   },
   {
     num: '04',
-    title: 'Performance Optimization',
-    desc: 'Core Web Vitals audits, bundle analysis, image optimization, and caching strategies for sub-second load times.',
+    title: 'Performance & Core Web Vitals',
+    desc: 'Bundle analysis, image optimisation, lazy loading, and caching strategies. We get your Lighthouse score where it belongs.',
   },
 ];
 
@@ -91,7 +91,7 @@ export default function FrontendMediaPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.15, ease: EASE }}
           >
-            Frontend Media Inc. — Modern Web Development
+            Baltar Technologies — Frontend Media Inc.
           </motion.span>
 
           <motion.h1
@@ -100,7 +100,7 @@ export default function FrontendMediaPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.28, ease: EASE }}
           >
-            Ship Faster.<br />Perform Better.<br />Scale Further.
+            Code That Doesn't<br />Get in the Way<br />of the Product.
           </motion.h1>
 
           <motion.p
@@ -109,8 +109,8 @@ export default function FrontendMediaPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.42, ease: EASE }}
           >
-            React, Next.js, and full-stack development for startups and
-            enterprises that demand exceptional frontend quality.
+            React, Next.js, and full-stack development for teams that need
+            a frontend that's fast, maintainable, and actually finished.
           </motion.p>
 
           <motion.div
@@ -119,9 +119,9 @@ export default function FrontendMediaPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.56, ease: EASE }}
           >
-            <Link href="/technologies/toronto-media-inc/contact" className={styles.btnPrimary}>
+            <a href="mailto:tech@baltar.ca" className={styles.btnPrimary}>
               Start a Project
-            </Link>
+            </a>
             <Link href="/technologies/toronto-media-inc/portfolio" className={styles.btnSecondary}>
               View Work
             </Link>
@@ -192,20 +192,20 @@ export default function FrontendMediaPage() {
         </div>
         <div className={styles.workCta}>
           <Link href="/technologies/toronto-media-inc/portfolio" className={styles.btnSecondary}>
-            See All Projects
+            See All Work
           </Link>
         </div>
       </section>
 
       {/* CTA */}
       <section className={styles.ctaSection}>
-        <h2 className={styles.ctaHeading}>Let's Build<br />Something Fast.</h2>
+        <h2 className={styles.ctaHeading}>Have a Frontend<br />That Needs a Hand?</h2>
         <p className={styles.ctaSub}>
-          Tell us what you're building. We'll tell you how to make it exceptional.
+          Tell us what you're building. We'll take it from there.
         </p>
-        <Link href="/technologies/toronto-media-inc/contact" className={styles.btnPrimary}>
-          Book a Free Call
-        </Link>
+        <a href="mailto:tech@baltar.ca" className={styles.btnPrimary}>
+          Start the Conversation
+        </a>
       </section>
 
       {/* Footer */}

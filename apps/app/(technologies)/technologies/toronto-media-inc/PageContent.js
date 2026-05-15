@@ -11,22 +11,22 @@ const services = [
   {
     num: '01',
     title: 'Web Design & Development',
-    desc: 'Custom websites built for speed, conversion, and brand identity — from landing pages to full web applications.',
+    desc: 'Custom sites built clean and fast. We handle everything from initial design through launch — no templates, no shortcuts, no bloated builders.',
   },
   {
     num: '02',
     title: 'SEO & Content Strategy',
-    desc: 'Data-driven SEO, content audits, and keyword strategies that put you in front of the right audience.',
+    desc: 'Keyword research, on-page optimisation, and content audits built around how your customers actually search — not keyword stuffing.',
   },
   {
     num: '03',
     title: 'AI Site Audits',
-    desc: 'Automated analysis of your site\'s performance, accessibility, and growth opportunities — actionable in 48 hours.',
+    desc: 'A full technical and content review of your existing site — Core Web Vitals, accessibility gaps, and conversion blockers — delivered within 48 hours.',
   },
   {
     num: '04',
-    title: 'Subscription Maintenance',
-    desc: 'Ongoing site care — updates, security patches, performance monitoring, and priority support. Monthly or annual.',
+    title: 'Ongoing Maintenance',
+    desc: 'Monthly or annual care plans covering updates, security monitoring, performance checks, and dedicated support. Your site stays fast, safe, and current.',
   },
 ];
 
@@ -91,7 +91,7 @@ export default function FrontendWebDesignPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.15, ease: EASE }}
           >
-            Toronto Media Inc. — Web Design & Development
+            Baltar Technologies — Toronto Media Inc.
           </motion.span>
 
           <motion.h1
@@ -100,7 +100,7 @@ export default function FrontendWebDesignPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.28, ease: EASE }}
           >
-            Websites That<br />Work As Hard<br />As You Do.
+            Your Site Should<br />Earn Its Place<br />on the Internet.
           </motion.h1>
 
           <motion.p
@@ -109,8 +109,8 @@ export default function FrontendWebDesignPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.42, ease: EASE }}
           >
-            Custom web design, SEO, and subscription maintenance for
-            Canadian businesses ready to grow.
+            Web design, SEO strategy, and ongoing site care for Canadian
+            businesses that take their digital presence seriously.
           </motion.p>
 
           <motion.div
@@ -119,9 +119,9 @@ export default function FrontendWebDesignPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.56, ease: EASE }}
           >
-            <Link href="/technologies/toronto-media-inc/contact" className={styles.btnPrimary}>
+            <a href="mailto:tech@baltar.ca" className={styles.btnPrimary}>
               Start a Project
-            </Link>
+            </a>
             <Link href="/technologies/toronto-media-inc/portfolio" className={styles.btnSecondary}>
               View Work
             </Link>
@@ -160,7 +160,7 @@ export default function FrontendWebDesignPage() {
       {/* Services */}
       <section className={styles.servicesSection}>
         <span className={styles.sectionTag}>// services</span>
-        <h2 className={styles.sectionHeading}>What We Build</h2>
+        <h2 className={styles.sectionHeading}>How We Work</h2>
         <div>
           {services.map((svc, i) => (
             <ServiceRow key={svc.num} {...svc} index={i} />
@@ -199,13 +199,13 @@ export default function FrontendWebDesignPage() {
 
       {/* CTA */}
       <section className={styles.ctaSection}>
-        <h2 className={styles.ctaHeading}>Ready to Build<br />Something?</h2>
+        <h2 className={styles.ctaHeading}>Got a Site<br />That Needs Work?</h2>
         <p className={styles.ctaSub}>
-          Let's talk about your project. Free consultation, no commitment.
+          Send us a note. No intake forms, no sales cycle — just a conversation.
         </p>
-        <Link href="/technologies/toronto-media-inc/contact" className={styles.btnPrimary}>
-          Book a Free Call
-        </Link>
+        <a href="mailto:tech@baltar.ca" className={styles.btnPrimary}>
+          Drop Us a Line
+        </a>
       </section>
 
       {/* Footer */}

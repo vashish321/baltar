@@ -66,8 +66,8 @@ export default function HeroSection() {
           <button className={styles.ctaPrimary} onClick={scrollToDivisions}>
             Explore Divisions
           </button>
-          <Link href="/about-comingsoon" className={styles.ctaSecondary}>
-            Our Story
+          <Link href="/contact-us" className={styles.ctaSecondary}>
+            Get in Touch
           </Link>
         </motion.div>
       </div>

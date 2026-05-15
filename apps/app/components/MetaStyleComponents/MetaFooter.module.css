@@ -47,7 +47,23 @@
   font-size: 0.875rem;
   color: #65676b;
   line-height: 1.5;
+  margin-bottom: 16px;
 }
+
+.companyContact {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.8rem;
+  color: #65676b;
+}
+
+.contactEmail {
+  color: #65676b;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.contactEmail:hover { color: #fff; }
 
 /* Links Grid */
 .linksGrid {

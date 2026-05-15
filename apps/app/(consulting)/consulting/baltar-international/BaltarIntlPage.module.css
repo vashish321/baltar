@@ -515,6 +515,17 @@
   .footer { padding: 48px 40px; }
 }
 
+@media (max-width: 768px) {
+  .heroContent { padding: 0 32px; }
+  .statsBand { padding: 44px 32px; gap: 24px; }
+  .aboutLeft { padding: 64px 32px; }
+  .servicesSection { padding: 72px 32px; }
+  .servicesGrid { grid-template-columns: 1fr; }
+  .regionsSection { padding: 72px 32px; }
+  .ctaSection { padding: 72px 32px; }
+  .footer { padding: 48px 32px; }
+}
+
 @media (max-width: 600px) {
   .heroContent { padding: 0 24px; }
   .statsBand { grid-template-columns: 1fr 1fr; padding: 40px 24px; }
