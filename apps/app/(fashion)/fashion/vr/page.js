@@ -1,7 +1,5 @@
-import VRSection from '@/components/VRComponent/HeroSectionComponent/VRCmponent';
-import Footer from '@/components/VRComponent/FooterComponent/FooterComponent';
-
 import { buildMetadata } from '@/lib/seo';
+import PageContent from './PageContent';
 
 export const metadata = buildMetadata({
   title: 'VR — Luxury Eyewear & Wearable Fashion Tech | Baltar Inc',
@@ -9,13 +7,6 @@ export const metadata = buildMetadata({
   path: '/fashion/vr',
 });
 
-
-
 export default function VRPage() {
-  return (
-    <>
-      <VRSection />
-      <Footer/>
-         </>
-  );
+  return <PageContent />;
 }

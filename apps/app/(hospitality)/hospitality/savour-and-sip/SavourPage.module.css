@@ -1,0 +1,412 @@
+.page {
+  background: #0a0a0a;
+  color: #fff;
+  min-height: 100vh;
+}
+
+/* ── Hero ── */
+.hero {
+  position: relative;
+  height: 100svh;
+  min-height: 640px;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.heroImgWrap {
+  position: absolute;
+  inset: 0;
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.2) 0%,
+    rgba(0,0,0,0.1) 35%,
+    rgba(0,0,0,0.75) 100%
+  );
+  z-index: 1;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 2;
+  padding: 0 80px 80px;
+  max-width: 680px;
+}
+
+.heroEyebrow {
+  display: block;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #C4955A;
+  margin-bottom: 20px;
+}
+
+.heroHeading {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(2.6rem, 5vw, 5rem);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: #fff;
+  margin: 0 0 28px;
+}
+
+.heroSub {
+  font-size: clamp(0.875rem, 1.1vw, 1rem);
+  color: rgba(255,255,255,0.65);
+  line-height: 1.7;
+  margin: 0 0 40px;
+  max-width: 420px;
+}
+
+.heroCtas {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* ── Buttons ── */
+.btnGold {
+  display: inline-flex;
+  align-items: center;
+  padding: 14px 36px;
+  background: #C4955A;
+  color: #000;
+  border-radius: 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.2s;
+}
+.btnGold:hover {
+  background: #d4a66a;
+  transform: translateY(-1px);
+}
+
+.btnOutline {
+  display: inline-flex;
+  align-items: center;
+  padding: 14px 36px;
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.4);
+  border-radius: 0;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+.btnOutline:hover {
+  border-color: rgba(255,255,255,0.8);
+  background: rgba(255,255,255,0.06);
+}
+
+/* ── Philosophy ── */
+.philosophySection {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 70vh;
+}
+
+.philosophyImgWrap {
+  position: relative;
+  overflow: hidden;
+}
+
+.philosophyContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px;
+  background: #111;
+}
+
+.goldRule {
+  width: 48px;
+  height: 1px;
+  background: #C4955A;
+  margin-bottom: 32px;
+}
+
+.philosophyEyebrow {
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #C4955A;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.philosophyHeading {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(1.8rem, 2.8vw, 2.8rem);
+  font-weight: 400;
+  line-height: 1.2;
+  color: #fff;
+  margin: 0 0 24px;
+}
+
+.philosophyBody {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.8;
+  max-width: 400px;
+  margin: 0 0 36px;
+}
+
+/* ── Services ── */
+.servicesSection {
+  padding: 120px 80px;
+  background: #0a0a0a;
+}
+
+.sectionLabel {
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #C4955A;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.sectionTitle {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(2rem, 3.5vw, 3.2rem);
+  font-weight: 400;
+  color: #fff;
+  margin: 0 0 80px;
+  line-height: 1.15;
+}
+
+.servicesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.serviceCard {
+  background: #111;
+  padding: 56px 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.serviceNum {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 2.5rem;
+  font-weight: 400;
+  color: rgba(196,149,90,0.25);
+  line-height: 1;
+  margin-bottom: 28px;
+}
+
+.serviceCardTitle {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: #fff;
+  margin: 0 0 16px;
+}
+
+.serviceCardDesc {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.75;
+  margin: 0 0 28px;
+  flex: 1;
+}
+
+.serviceLink {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #C4955A;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.serviceLink:hover { opacity: 0.7; }
+
+/* ── Gallery ── */
+.gallerySection {
+  padding: 0 80px 120px;
+}
+
+.galleryGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 4px;
+}
+
+.galleryItem {
+  position: relative;
+  overflow: hidden;
+}
+
+.galleryItem:first-child {
+  grid-row: 1 / 3;
+  aspect-ratio: 3 / 4;
+}
+
+.galleryItem:not(:first-child) {
+  aspect-ratio: 4 / 3;
+}
+
+.galleryOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.15);
+  transition: background 0.3s;
+}
+.galleryItem:hover .galleryOverlay {
+  background: rgba(0,0,0,0);
+}
+
+/* ── CTA ── */
+.ctaSection {
+  position: relative;
+  height: 70vh;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+.ctaImgWrap {
+  position: absolute;
+  inset: 0;
+}
+
+.ctaOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  z-index: 1;
+}
+
+.ctaContent {
+  position: relative;
+  z-index: 2;
+  padding: 0 40px;
+  max-width: 700px;
+}
+
+.ctaHeading {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(2.2rem, 4vw, 4rem);
+  font-weight: 400;
+  color: #fff;
+  line-height: 1.15;
+  margin: 0 0 24px;
+}
+
+.ctaSub {
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.7;
+  margin: 0 0 40px;
+}
+
+/* ── Footer ── */
+.footer {
+  background: #060606;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 48px 80px;
+}
+
+.footerTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 40px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.footerBrand {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: #fff;
+  letter-spacing: 0.04em;
+}
+
+.footerTagline {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.1em;
+  margin-top: 8px;
+  display: block;
+}
+
+.footerNav {
+  display: flex;
+  gap: 32px;
+}
+
+.footerNav a {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.4);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  transition: color 0.2s;
+}
+.footerNav a:hover { color: #C4955A; }
+
+.footerBottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footerCopyright {
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.2);
+}
+
+.footerParent {
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.3);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footerParent:hover { color: #C4955A; }
+
+/* ── Responsive ── */
+@media (max-width: 960px) {
+  .heroContent { padding: 0 40px 64px; }
+  .philosophySection { grid-template-columns: 1fr; }
+  .philosophyImgWrap { height: 50vh; }
+  .philosophyContent { padding: 64px 40px; }
+  .servicesSection, .gallerySection { padding: 80px 40px; }
+  .servicesGrid { grid-template-columns: 1fr; gap: 2px; }
+  .galleryGrid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+  .galleryItem:first-child { grid-row: auto; aspect-ratio: 4 / 3; }
+  .footer { padding: 48px 40px; }
+}
+
+@media (max-width: 600px) {
+  .heroContent { padding: 0 24px 56px; }
+  .servicesSection, .gallerySection { padding: 64px 24px; }
+  .galleryGrid { grid-template-columns: 1fr; }
+  .footer { padding: 40px 24px; }
+  .footerTop { flex-direction: column; gap: 24px; }
+  .footerNav { flex-wrap: wrap; gap: 16px; }
+  .footerBottom { flex-direction: column; gap: 8px; align-items: flex-start; }
+}

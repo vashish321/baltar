@@ -3,52 +3,52 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
-import styles from './TMIPage.module.css';
+import styles from './FMIPage.module.css';
 
 const EASE = [0.16, 1, 0.3, 1];
 
 const services = [
   {
     num: '01',
-    title: 'Web Design & Development',
-    desc: 'Custom websites built for speed, conversion, and brand identity — from landing pages to full web applications.',
+    title: 'React & Next.js Development',
+    desc: 'Lightning-fast, SEO-ready web apps built with the modern React ecosystem — server components, streaming, and edge rendering.',
   },
   {
     num: '02',
-    title: 'SEO & Content Strategy',
-    desc: 'Data-driven SEO, content audits, and keyword strategies that put you in front of the right audience.',
+    title: 'UI/UX Engineering',
+    desc: 'Pixel-perfect interfaces with smooth animations, accessibility-first markup, and design systems that scale.',
   },
   {
     num: '03',
-    title: 'AI Site Audits',
-    desc: 'Automated analysis of your site\'s performance, accessibility, and growth opportunities — actionable in 48 hours.',
+    title: 'API Integration & Full-Stack',
+    desc: 'Connect your frontend to any backend — REST, GraphQL, Supabase, or custom APIs — with clean, typed integrations.',
   },
   {
     num: '04',
-    title: 'Subscription Maintenance',
-    desc: 'Ongoing site care — updates, security patches, performance monitoring, and priority support. Monthly or annual.',
+    title: 'Performance Optimization',
+    desc: 'Core Web Vitals audits, bundle analysis, image optimization, and caching strategies for sub-second load times.',
   },
 ];
 
 const stats = [
-  { value: '100+', label: 'Projects Delivered' },
-  { value: '40+', label: 'Happy Clients' },
-  { value: '3×', label: 'Avg. Performance Lift' },
-  { value: '24/7', label: 'Ongoing Support' },
+  { value: '50+', label: 'Apps Shipped' },
+  { value: '99', label: 'Lighthouse Score' },
+  { value: '<1s', label: 'Target Load Time' },
+  { value: '100%', label: 'TypeScript-Ready' },
 ];
 
 const workItems = [
   {
-    src: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80',
-    label: 'E-Commerce',
+    src: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80',
+    label: 'Web Application',
   },
   {
-    src: 'https://images.unsplash.com/photo-1522542550221-31fd19575a2d?auto=format&fit=crop&w=800&q=80',
-    label: 'SaaS Product',
+    src: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80',
+    label: 'Dashboard UI',
   },
   {
-    src: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=800&q=80',
-    label: 'Brand Identity',
+    src: 'https://images.unsplash.com/photo-1587620962725-abab19836100?auto=format&fit=crop&w=800&q=80',
+    label: 'Developer Tools',
   },
 ];
 
@@ -74,7 +74,7 @@ function ServiceRow({ num, title, desc, index }) {
   );
 }
 
-export default function FrontendWebDesignPage() {
+export default function FrontendMediaPage() {
   const statsRef = useRef(null);
   const statsInView = useInView(statsRef, { once: true, margin: '-10% 0px' });
 
@@ -91,7 +91,7 @@ export default function FrontendWebDesignPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.15, ease: EASE }}
           >
-            Toronto Media Inc. — Web Design & Development
+            Frontend Media Inc. — Modern Web Development
           </motion.span>
 
           <motion.h1
@@ -100,7 +100,7 @@ export default function FrontendWebDesignPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.28, ease: EASE }}
           >
-            Websites That<br />Work As Hard<br />As You Do.
+            Ship Faster.<br />Perform Better.<br />Scale Further.
           </motion.h1>
 
           <motion.p
@@ -109,8 +109,8 @@ export default function FrontendWebDesignPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.42, ease: EASE }}
           >
-            Custom web design, SEO, and subscription maintenance for
-            Canadian businesses ready to grow.
+            React, Next.js, and full-stack development for startups and
+            enterprises that demand exceptional frontend quality.
           </motion.p>
 
           <motion.div
@@ -130,7 +130,7 @@ export default function FrontendWebDesignPage() {
 
         <div className={styles.heroImgWrap}>
           <Image
-            src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80"
+            src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80"
             alt=""
             fill
             priority
@@ -199,9 +199,9 @@ export default function FrontendWebDesignPage() {
 
       {/* CTA */}
       <section className={styles.ctaSection}>
-        <h2 className={styles.ctaHeading}>Ready to Build<br />Something?</h2>
+        <h2 className={styles.ctaHeading}>Let's Build<br />Something Fast.</h2>
         <p className={styles.ctaSub}>
-          Let's talk about your project. Free consultation, no commitment.
+          Tell us what you're building. We'll tell you how to make it exceptional.
         </p>
         <Link href="/technologies/toronto-media-inc/contact" className={styles.btnPrimary}>
           Book a Free Call
@@ -211,17 +211,16 @@ export default function FrontendWebDesignPage() {
       {/* Footer */}
       <footer className={styles.footer}>
         <div className={styles.footerTop}>
-          <span className={styles.footerBrand}>Toronto Media Inc.</span>
+          <span className={styles.footerBrand}>Frontend Media Inc.</span>
           <nav className={styles.footerNav}>
-            <Link href="/technologies/toronto-media-inc/services">Services</Link>
+            <Link href="/technologies/frontend-media">Home</Link>
             <Link href="/technologies/toronto-media-inc/portfolio">Work</Link>
             <Link href="/technologies/toronto-media-inc/pricing">Pricing</Link>
-            <Link href="/technologies/toronto-media-inc/about">About</Link>
             <Link href="/technologies/toronto-media-inc/contact">Contact</Link>
           </nav>
         </div>
         <div className={styles.footerBottom}>
-          <span>© {new Date().getFullYear()} Toronto Media Inc. — A Baltar Inc. Company</span>
+          <span>© {new Date().getFullYear()} Frontend Media Inc. — A Baltar Inc. Company</span>
           <Link href="/" className={styles.footerParent}>← Baltar Inc.</Link>
         </div>
       </footer>

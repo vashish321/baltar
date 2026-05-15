@@ -4,6 +4,7 @@ export default function MarketingLayout({ children }) {
   return (
     <div className="w-full overflow-x-hidden bg-black text-white font-sans min-h-screen flex flex-col">
       <MetaHeader />
+      {/* No top padding — hero is full-bleed behind fixed nav */}
       <main className="flex-1 w-full">{children}</main>
     </div>
   );

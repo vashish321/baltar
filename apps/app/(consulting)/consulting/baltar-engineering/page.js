@@ -1,12 +1,12 @@
 import { buildMetadata } from '@/lib/seo';
-import ArchonEngineeringComingSoonPage from './PageContent';
+import PageContent from './PageContent';
 
 export const metadata = buildMetadata({
-  title: 'Archon Engineering — Structural & Civil Engineering Consulting | Canada',
-  description: 'Archon Engineering by Baltar Inc provides structural engineering, construction project management, and civil design consulting for commercial and residential projects across Canada.',
+  title: 'Baltar Consulting — Structural & Civil Engineering | Canada',
+  description: 'Baltar Consulting provides structural engineering, construction project management, and civil design consulting for commercial and residential projects across Canada.',
   path: '/consulting/baltar-engineering',
 });
 
-export default function Page(props) {
-  return <ArchonEngineeringComingSoonPage {...props} />;
+export default function Page() {
+  return <PageContent />;
 }

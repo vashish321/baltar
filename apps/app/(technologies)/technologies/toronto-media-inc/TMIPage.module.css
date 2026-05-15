@@ -1,0 +1,447 @@
+.page {
+  background: #080808;
+  color: #fff;
+  min-height: 100vh;
+}
+
+/* ── Hero ── */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+}
+
+.gridBg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 64px 64px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.heroInner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 120px 80px 80px;
+}
+
+.eyebrow {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  color: rgba(255,255,255,0.35);
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  display: block;
+}
+
+.heroHeading {
+  font-size: clamp(2.8rem, 5vw, 5.2rem);
+  font-weight: 700;
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  color: #fff;
+  margin: 0 0 28px;
+}
+
+.heroSub {
+  font-size: clamp(0.875rem, 1.2vw, 1rem);
+  color: rgba(255,255,255,0.5);
+  line-height: 1.7;
+  margin: 0 0 44px;
+  max-width: 440px;
+}
+
+.heroCtas {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Right image pane */
+.heroImgWrap {
+  position: relative;
+  overflow: hidden;
+}
+
+.heroImgOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, #080808 0%, rgba(8,8,8,0.15) 40%, rgba(8,8,8,0) 100%);
+  z-index: 1;
+}
+
+/* ── Buttons ── */
+.btnPrimary {
+  display: inline-flex;
+  align-items: center;
+  padding: 13px 32px;
+  background: #fff;
+  color: #000;
+  border-radius: 100px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.2s;
+}
+.btnPrimary:hover {
+  background: rgba(255,255,255,0.88);
+  transform: translateY(-1px);
+}
+
+.btnSecondary {
+  display: inline-flex;
+  align-items: center;
+  padding: 13px 32px;
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.28);
+  border-radius: 100px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  backdrop-filter: blur(8px);
+  transition: border-color 0.2s, background 0.2s, transform 0.2s;
+}
+.btnSecondary:hover {
+  border-color: rgba(255,255,255,0.65);
+  background: rgba(255,255,255,0.07);
+  transform: translateY(-1px);
+}
+
+/* ── Stats ── */
+.statsSection {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid rgba(255,255,255,0.07);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 48px;
+  border-right: 1px solid rgba(255,255,255,0.07);
+}
+.statItem:last-child {
+  border-right: none;
+}
+
+.statValue {
+  font-size: clamp(2rem, 3.5vw, 3.2rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+.statLabel {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.35);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+/* ── Section shared ── */
+.sectionTag {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.62rem;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.sectionHeading {
+  font-size: clamp(1.8rem, 3vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: #fff;
+  margin: 0 0 64px;
+}
+
+/* ── Services ── */
+.servicesSection {
+  padding: 120px 80px;
+}
+
+.serviceRow {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  padding: 36px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  transition: background 0.2s;
+}
+.serviceRow:first-of-type {
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.serviceRow:hover {
+  padding-left: 8px;
+}
+
+.serviceNum {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.2);
+  letter-spacing: 0.1em;
+  min-width: 28px;
+  flex-shrink: 0;
+}
+
+.serviceBody {
+  flex: 1;
+}
+
+.serviceTitle {
+  font-size: clamp(1rem, 1.4vw, 1.3rem);
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 8px;
+}
+
+.serviceDesc {
+  font-size: 0.875rem;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.65;
+  margin: 0;
+  max-width: 560px;
+}
+
+.serviceArrow {
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.15);
+  flex-shrink: 0;
+  transition: color 0.2s, transform 0.2s;
+}
+.serviceRow:hover .serviceArrow {
+  color: #fff;
+  transform: translateX(6px);
+}
+
+/* ── Portfolio ── */
+.workSection {
+  padding: 0 80px 120px;
+}
+
+.workGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.workCard {
+  position: relative;
+  overflow: hidden;
+}
+
+.workImgWrap {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+
+.workOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  transition: background 0.3s;
+}
+.workCard:hover .workOverlay {
+  background: rgba(0,0,0,0.1);
+}
+
+.workLabel {
+  display: block;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.62rem;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 12px 0 0;
+}
+
+.workCta {
+  display: flex;
+}
+
+/* ── CTA Banner ── */
+.ctaSection {
+  padding: 120px 80px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+.ctaHeading {
+  font-size: clamp(2.2rem, 4.5vw, 4.5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #fff;
+  margin: 0 0 20px;
+  line-height: 1.05;
+}
+
+.ctaSub {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.5);
+  margin: 0 0 40px;
+  max-width: 480px;
+  line-height: 1.6;
+}
+
+/* ── Footer ── */
+.footer {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 48px 80px;
+}
+
+.footerTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.footerBrand {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+
+.footerNav {
+  display: flex;
+  gap: 32px;
+}
+
+.footerNav a {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.4);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footerNav a:hover {
+  color: #fff;
+}
+
+.footerBottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding-top: 24px;
+}
+
+.footerBottom > span {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.22);
+}
+
+.footerParent {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.32);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footerParent:hover {
+  color: #fff;
+}
+
+/* ── Responsive ── */
+@media (max-width: 960px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+  .heroImgWrap {
+    display: none;
+  }
+  .heroInner {
+    padding: 120px 40px 80px;
+  }
+  .statsSection {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .statItem:nth-child(2) {
+    border-right: none;
+  }
+  .statItem {
+    padding: 36px 32px;
+  }
+  .servicesSection,
+  .ctaSection {
+    padding: 80px 40px;
+  }
+  .workSection {
+    padding: 0 40px 80px;
+  }
+  .workGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .footer {
+    padding: 48px 40px;
+  }
+}
+
+@media (max-width: 600px) {
+  .heroInner {
+    padding: 100px 24px 64px;
+  }
+  .statsSection {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .statItem {
+    padding: 28px 20px;
+  }
+  .servicesSection,
+  .ctaSection {
+    padding: 64px 24px;
+  }
+  .workSection {
+    padding: 0 24px 64px;
+  }
+  .workGrid {
+    grid-template-columns: 1fr;
+  }
+  .footer {
+    padding: 40px 24px;
+  }
+  .footerTop {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  .footerNav {
+    flex-wrap: wrap;
+    gap: 12px 20px;
+  }
+  .footerBottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .serviceRow {
+    gap: 20px;
+  }
+}
